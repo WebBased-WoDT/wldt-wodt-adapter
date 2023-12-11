@@ -15,7 +15,7 @@
  */
 
 plugins {
-    application
+    `java-library`
     alias(libs.plugins.java.qa)
 }
 
