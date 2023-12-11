@@ -47,14 +47,15 @@ jobs:
         with:
           directory: "build/reports/jacoco"
 
-  release-and-delivery:
+  release:
     permissions:
       contents: write
       issues: write
       pull-requests: write
+      packages: write
     concurrency:
       # Allow only one release at a time.
-      group: release-and-delivery-${{ github.event.number || github.ref }}
+      group: release-${{ github.event.number || github.ref }}
     needs:
       - build
     runs-on: ubuntu-latest
@@ -68,27 +69,37 @@ jobs:
         || github.event.pull_request.head.repo.full_name == github.repository
       )
     steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 11
+          distribution: adopt
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-      - name: Release and container delivery
-        uses: SmartOperatingBlock/release-and-delivery-action@1.0.11
-        with:
-          should-release: true
-          release-command: |
-            npm install
-            npx semantic-release
-          should-build-and-deliver-container: false
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release library
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install
+          npx semantic-release
 
   documentation-deploy:
     needs:
-      - release-and-delivery
+      - release
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: needs.release-and-delivery.outputs.release-status == 'released'
+    if: needs.release.outputs.release-status == 'released'
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
@@ -109,7 +120,7 @@ jobs:
     needs:
       - validation
       - build
-      - release-and-delivery
+      - release
       - documentation-deploy
     if: >-
       always() && (
