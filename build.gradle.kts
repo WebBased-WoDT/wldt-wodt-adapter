@@ -19,7 +19,7 @@ plugins {
     alias(libs.plugins.java.qa)
 }
 
-group = "io.github.andreagiulianelli"
+group = "io.github.webbasedwodt"
 
 repositories {
     mavenCentral()

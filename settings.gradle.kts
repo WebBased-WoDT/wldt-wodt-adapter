@@ -19,7 +19,7 @@ plugins {
     id("com.gradle.enterprise") version "3.16"
 }
 
-rootProject.name = "java-template-project"
+rootProject.name = "wldt-wodt-adapter"
 
 gradleEnterprise {
     buildScan {
