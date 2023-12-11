@@ -17,6 +17,7 @@
 plugins {
     `java-library`
     alias(libs.plugins.java.qa)
+    alias(libs.plugins.publish.on.central)
 }
 
 group = "io.github.webbasedwodt"
@@ -39,4 +40,39 @@ tasks.withType<Test> {
         events(*org.gradle.api.tasks.testing.logging.TestLogEvent.values())
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
+}
+
+publishOnCentral {
+    projectUrl.set("https://github.com/WebBased-WoDT/wldt-wodt-adapter")
+    scmConnection.set("git:git@github.com:WebBased-WoDT/wldt-wodt-adapter")
+    configureMavenCentral.set(false)
+    licenseName.set("Apache License, Version 2.0")
+    licenseUrl.set("http://www.apache.org/licenses/LICENSE-2.0")
+
+    repository("https://maven.pkg.github.com/WebBased-WoDT/wldt-wodt-adapter", "GitHub") {
+        user.set(System.getenv("GITHUB_ACTOR"))
+        password.set(System.getenv("GITHUB_TOKEN"))
+    }
+}
+
+publishing {
+    publications {
+        withType<MavenPublication> {
+            pom {
+                developers {
+                    developer {
+                        name.set("Andrea Giulianelli")
+                        email.set("andrea.giulianelli4@studio.unibo.it")
+                        url.set("https://github.com/AndreaGiulianelli")
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
 }
