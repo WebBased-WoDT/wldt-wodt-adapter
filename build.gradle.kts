@@ -27,6 +27,7 @@ repositories {
 }
 
 dependencies {
+    api(libs.wldt)
     testImplementation(libs.bundles.java.testing)
     testRuntimeOnly(libs.junit.engine)
 }
