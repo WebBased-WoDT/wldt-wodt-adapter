@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.andreagiulianelli;
+package io.github.webbasedwodt;
 
 /**
  * Java template project.
