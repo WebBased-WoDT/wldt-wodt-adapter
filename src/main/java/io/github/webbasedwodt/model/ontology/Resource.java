@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.webbasedwodt.model;
+package io.github.webbasedwodt.model.ontology;
+
+import java.util.Optional;
 
 /**
- * It models the concept of RDF node in the context of a Digital Twin Knowledge Graph.
- * A Node can be anything in the Knowledge Graph from RDF Resources to Literals.
+ * It models an RDF resource in the context of a Digital Twin Knowledge Graph.
+ * So it can be an Individual, a Property or a Blank Node.
  */
-public interface Node { }
+public interface Resource extends Node {
+    /**
+     * Get the URI of the Resource.
+     * @return the uri, as an Optional String, of the resource
+     */
+    Optional<String> getUri();
+}

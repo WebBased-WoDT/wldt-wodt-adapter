@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-package io.github.webbasedwodt.model;
+package io.github.webbasedwodt.model.ontology;
+
+
+import java.util.Optional;
 
 /**
- * It models the concept of RDF Literal.
- * @param <T> the type of the literal.
+ * It models the concept of RDF Property in the context of Digital Twin Knowledge Graph.
  */
-public final class Literal<T> implements Node {
-    private final T value;
+public final class Property implements Resource {
+    private final String propertyUri;
 
     /**
      * Default constructor.
-     * @param value the value of the literal
+     * @param propertyUri the uri of the property
      */
-    public Literal(final T value) {
-        this.value = value;
+    public Property(final String propertyUri) {
+        this.propertyUri = propertyUri;
     }
 
-    /**
-     * Getter.
-     * @return the literal
-     */
-    public T getValue() {
-        return this.value;
+    @Override
+    public Optional<String> getUri() {
+        return Optional.of(this.propertyUri);
     }
 }

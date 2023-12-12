@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.webbasedwodt.model;
+package io.github.webbasedwodt.model.ontology;
 
 import org.apache.commons.lang3.tuple.Pair;
 

@@ -14,27 +14,10 @@
  * limitations under the License.
  */
 
-package io.github.webbasedwodt.model;
-
-
-import java.util.Optional;
+package io.github.webbasedwodt.model.ontology;
 
 /**
- * It models the concept of RDF Property in the context of Digital Twin Knowledge Graph.
+ * It models the concept of RDF node in the context of a Digital Twin Knowledge Graph.
+ * A Node can be anything in the Knowledge Graph from RDF Resources to Literals.
  */
-public final class Property implements Resource {
-    private final String propertyUri;
-
-    /**
-     * Default constructor.
-     * @param propertyUri the uri of the property
-     */
-    public Property(final String propertyUri) {
-        this.propertyUri = propertyUri;
-    }
-
-    @Override
-    public Optional<String> getUri() {
-        return Optional.of(this.propertyUri);
-    }
-}
+public interface Node { }

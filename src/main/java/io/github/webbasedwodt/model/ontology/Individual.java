@@ -14,18 +14,27 @@
  * limitations under the License.
  */
 
-package io.github.webbasedwodt.model;
+package io.github.webbasedwodt.model.ontology;
 
 import java.util.Optional;
 
 /**
- * It models an RDF resource in the context of a Digital Twin Knowledge Graph.
- * So it can be an Individual, a Property or a Blank Node.
+ * It models the concept of Individual in the context of Digital Twin Knowledge Graph.
+ * So an individual here is another Digital Twin, identified by its URI.
  */
-public interface Resource extends Node {
+public final class Individual implements Resource {
+    private final String individualUri;
+
     /**
-     * Get the URI of the Resource.
-     * @return the uri, as an Optional String, of the resource
+     * Default constructor.
+     * @param individualUri the uri of the individual.
      */
-    Optional<String> getUri();
+    public Individual(final String individualUri) {
+        this.individualUri = individualUri;
+    }
+
+    @Override
+    public Optional<String> getUri() {
+        return Optional.of(this.individualUri);
+    }
 }
