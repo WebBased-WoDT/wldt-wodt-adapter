@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  * The physical adapter of the lamp Digital Twins used during tests.
  */
 public final class LampPhysicalAdapter extends PhysicalAdapter {
-    private static final String STATUS_PROPERTY_KEY = "status-property-key";
+    private static final String IS_ON_PROPERTY_KEY = "is-on-property-key";
     private static final String SWITCH_ACTION_KEY = "switch-action-key";
     private static final String LOCATED_INSIDE_RELATIONSHIP_KEY = "located-inside";
     private static final int EMULATION_WAIT_TIME = 2000;
@@ -57,7 +57,7 @@ public final class LampPhysicalAdapter extends PhysicalAdapter {
                 //Create a new event to notify the variation of a Physical Property
                 this.status = !this.status;
                 final PhysicalAssetPropertyWldtEvent<Boolean> newStatus = new PhysicalAssetPropertyWldtEvent<>(
-                        STATUS_PROPERTY_KEY,
+                        IS_ON_PROPERTY_KEY,
                         this.status
                 );
                 publishPhysicalAssetPropertyWldtEvent(newStatus);
@@ -71,7 +71,7 @@ public final class LampPhysicalAdapter extends PhysicalAdapter {
     @Override
     public void onAdapterStart() {
         final PhysicalAssetDescription pad = new PhysicalAssetDescription();
-        final PhysicalAssetProperty<Boolean> statusProperty = new PhysicalAssetProperty<>(STATUS_PROPERTY_KEY, this.status);
+        final PhysicalAssetProperty<Boolean> statusProperty = new PhysicalAssetProperty<>(IS_ON_PROPERTY_KEY, this.status);
         pad.getProperties().add(statusProperty);
         final PhysicalAssetAction switchAction = new PhysicalAssetAction(SWITCH_ACTION_KEY, "status.switch", "");
         pad.getActions().add(switchAction);
@@ -100,6 +100,8 @@ public final class LampPhysicalAdapter extends PhysicalAdapter {
             );
             while (true) {
                 Thread.sleep(EMULATION_WAIT_TIME);
+                status = !status;
+                publishPhysicalAssetPropertyWldtEvent(new PhysicalAssetPropertyWldtEvent<>(IS_ON_PROPERTY_KEY, status));
                 Logger.getLogger(LampPhysicalAdapter.class.getName()).info("STATUS: " + this.status);
             }
         } catch (EventBusException | InterruptedException e) {
