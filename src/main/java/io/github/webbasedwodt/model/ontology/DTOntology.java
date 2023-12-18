@@ -66,5 +66,5 @@ public interface DTOntology {
      * @param targetUri the target uri of the relationship
      * @return an optional that is filled with the Pair of the mapped Property and its mapped target uri if possible
      */
-    Optional<Pair<Property, Node>> convertRelationship(String rawRelationship, String targetUri);
+    Optional<Pair<Property, Individual>> convertRelationship(String rawRelationship, String targetUri);
 }
