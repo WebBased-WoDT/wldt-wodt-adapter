@@ -57,6 +57,14 @@ public final class BlankNode implements Resource {
         return new BlankNode(resultingPredicates);
     }
 
+    /**
+     * Get the predicates inside the Blank node.
+     * @return the list of predicates
+     */
+    public List<Pair<Property, Node>> getPredicates() {
+        return new ArrayList<>(this.predicates);
+    }
+
     @Override
     public Optional<String> getUri() {
         return Optional.empty();
