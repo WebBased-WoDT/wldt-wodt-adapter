@@ -26,16 +26,16 @@ import it.wldt.core.state.DigitalTwinStateRelationshipInstance;
 import it.wldt.core.state.IDigitalTwinState;
 
 /**
- * This class represents the WoDT Digital Twin Interface component of the Abstract Architecture.
- * It is implemented as a Digital Adapter for the WLDT Framework.
+ * This class represents the WLDT Framework Digital Adapter that allows to implement the WoDT Digital Twin layer
+ * implementing the components of the Abstract Architecture.
  */
-public final class WoDTDigitalTwinInterface extends DigitalAdapter<Void> {
+public final class WoDTDigitalAdapter extends DigitalAdapter<Void> {
 
     /**
      * Default constructor.
      * @param id the id of the Digital Adapter.
      */
-    public WoDTDigitalTwinInterface(final String id) {
+    public WoDTDigitalAdapter(final String id) {
         super(id, null);
     }
 
