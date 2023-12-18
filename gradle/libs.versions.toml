@@ -2,6 +2,7 @@
 junit = "5.10.1"
 
 [libraries]
+jena = { module = "org.apache.jena:apache-jena-libs", version = "4.1.0" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 wldt = { module = "io.github.wldt:wldt-core", version = "0.2.1" }
