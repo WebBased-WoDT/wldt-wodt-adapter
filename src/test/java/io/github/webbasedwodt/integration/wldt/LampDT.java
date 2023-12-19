@@ -30,6 +30,8 @@ import java.util.logging.Logger;
  * Manual Integration test for the WoDT Digital Twin implemented with the WLDT Framework.
  */
 public final class LampDT {
+    private static final int TEST_PORT_NUMBER = 3000;
+
     private LampDT() { }
 
     /**
@@ -42,7 +44,11 @@ public final class LampDT {
             digitalTwinEngine.addPhysicalAdapter(new LampPhysicalAdapter());
             digitalTwinEngine.addDigitalAdapter(new WoDTDigitalAdapter(
                     "wodt-dt-adapter",
-                    new WoDTDigitalAdapterConfiguration("https://example.com/dt", new LampDTOntology())
+                    new WoDTDigitalAdapterConfiguration(
+                            "https://example.com/dt",
+                            new LampDTOntology(),
+                            TEST_PORT_NUMBER,
+                            "lampPA")
             ));
             digitalTwinEngine.startLifeCycle();
         } catch (ModelException

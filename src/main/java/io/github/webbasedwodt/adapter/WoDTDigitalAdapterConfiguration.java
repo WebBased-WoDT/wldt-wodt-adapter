@@ -24,15 +24,25 @@ import io.github.webbasedwodt.model.ontology.DTOntology;
 public final class WoDTDigitalAdapterConfiguration {
     private final DTOntology ontology;
     private final String digitalTwinUri;
+    private final int portNumber;
+    private final String physicalAssetId;
 
     /**
      * Default constructor.
      * @param digitalTwinUri the uri of the WoDT Digital Twin
      * @param ontology the ontology to use for the semantics
+     * @param portNumber the port number where to expose services
+     * @param physicalAssetId the id of the associated physical asset
      */
-    public WoDTDigitalAdapterConfiguration(final String digitalTwinUri, final DTOntology ontology) {
+    public WoDTDigitalAdapterConfiguration(
+            final String digitalTwinUri,
+            final DTOntology ontology,
+            final int portNumber,
+            final String physicalAssetId) {
         this.digitalTwinUri = digitalTwinUri;
         this.ontology = ontology;
+        this.portNumber = portNumber;
+        this.physicalAssetId = physicalAssetId;
     }
 
     /**
@@ -49,5 +59,21 @@ public final class WoDTDigitalAdapterConfiguration {
      */
     public DTOntology getOntology() {
         return this.ontology;
+    }
+
+    /**
+     * Obtain the port number where to expose services.
+     * @return the port number
+     */
+    public int getPortNumber() {
+        return this.portNumber;
+    }
+
+    /**
+     * Obtain the associated physical asset id.
+     * @return the id of the associated physical asset
+     */
+    public String getPhysicalAssetId() {
+        return this.physicalAssetId;
     }
 }
