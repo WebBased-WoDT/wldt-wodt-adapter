@@ -35,7 +35,7 @@ import java.util.function.BiFunction;
 /**
  * Implementation of the controller for the WoDT Digital Twins Interface component of the Abstract Architecture.
  */
-public final class WoDTDigitalTwinInterfaceControllerImpl implements WoDTDigitalTwinInterfaceController {
+final class WoDTDigitalTwinInterfaceControllerImpl implements WoDTDigitalTwinInterfaceController {
     private final DTKGEngineReader dtkgEngine;
     private final DTDManagerReader dtdManager;
     private final BiFunction<String, String, Boolean> actionHandler;
@@ -47,7 +47,7 @@ public final class WoDTDigitalTwinInterfaceControllerImpl implements WoDTDigital
      * @param dtdManager the DTD Manager
      * @param actionHandler the handler for actions
      */
-    public WoDTDigitalTwinInterfaceControllerImpl(
+    WoDTDigitalTwinInterfaceControllerImpl(
             final DTKGEngineReader dtkgEngine,
             final DTDManagerReader dtdManager,
             final BiFunction<String, String, Boolean> actionHandler

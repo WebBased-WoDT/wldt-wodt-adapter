@@ -27,7 +27,7 @@ import java.util.function.BiFunction;
  * This class implement the WoDT Web server that host the WoDT Digital Twin Interface component
  * of the Abstract Architecture.
  */
-public final class WoDTWebServerImpl implements WoDTWebServer {
+final class WoDTWebServerImpl implements WoDTWebServer {
     private final int portNumber;
     private final WoDTDigitalTwinInterfaceControllerImpl wodtDigitalTwinInterfaceController;
 
@@ -38,7 +38,7 @@ public final class WoDTWebServerImpl implements WoDTWebServer {
      * @param dtdManager the DTDManager
      * @param actionHandler handler of action invocation
      */
-    public WoDTWebServerImpl(
+    WoDTWebServerImpl(
             final int portNumber,
             final DTKGEngine dtkgEngine,
             final DTDManagerReader dtdManager,

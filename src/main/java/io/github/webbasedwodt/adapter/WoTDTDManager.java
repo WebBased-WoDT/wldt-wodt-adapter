@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  * This class provide an implementation of the {@link io.github.webbasedwodt.application.component.DTDManager} using
  * a WoT Thing Description to implement the Digital Twin Descriptor.
  */
-public final class WoTDTDManager implements DTDManager {
+final class WoTDTDManager implements DTDManager {
     private static final String THING_DESCRIPTION_CONTEXT = "https://www.w3.org/2019/wot/td/v1";
     private static final String VERSION = "1.0.0";
     private static final String SNAPSHOT_DTD_PROPERTY = "snapshot";
@@ -65,7 +65,7 @@ public final class WoTDTDManager implements DTDManager {
      * @param physicalAssetId the id of the associated physical asset
      * @param portNumber the port number where to offer the affordances
      */
-    public WoTDTDManager(final String digitalTwinUri,
+    WoTDTDManager(final String digitalTwinUri,
                          final DTOntology ontology,
                          final String physicalAssetId,
                          final int portNumber) {

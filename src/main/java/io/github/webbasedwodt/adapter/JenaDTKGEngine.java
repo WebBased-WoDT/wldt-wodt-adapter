@@ -39,7 +39,7 @@ import java.util.function.Consumer;
  * This class provides an implementation of the {@link io.github.webbasedwodt.application.component.DTKGEngine} using
  * Apache Jena.
  */
-public final class JenaDTKGEngine implements DTKGEngine {
+final class JenaDTKGEngine implements DTKGEngine {
     private final Model model;
     private final Resource digitalTwinResource;
     private final List<DTKGObserver> observers;
@@ -48,7 +48,7 @@ public final class JenaDTKGEngine implements DTKGEngine {
      * Default constructor.
      * @param digitalTwinUri the uri of the Digital Twin for which this class creates the DTKG
      */
-    public JenaDTKGEngine(final String digitalTwinUri) {
+    JenaDTKGEngine(final String digitalTwinUri) {
         this.model = ModelFactory.createDefaultModel();
         this.digitalTwinResource = this.model.createResource(digitalTwinUri);
         this.observers = new ArrayList<>();

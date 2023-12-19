@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * Base implementation of the {@link PlatformManagementInterface}.
  */
-public final class BasePlatformManagementInterface implements PlatformManagementInterface {
+final class BasePlatformManagementInterface implements PlatformManagementInterface {
     private static final int ACCEPTED_REQUEST_STATUS_CODE = 202;
     private final String digitalTwinUri;
     private final Set<String> platforms;
@@ -38,7 +38,7 @@ public final class BasePlatformManagementInterface implements PlatformManagement
      * Default constructor.
      * @param digitalTwinUri the uri of the WoDT Digital Twin
      */
-    public BasePlatformManagementInterface(final String digitalTwinUri) {
+    BasePlatformManagementInterface(final String digitalTwinUri) {
         this.digitalTwinUri = digitalTwinUri;
         this.platforms = Collections.synchronizedSet(new HashSet<>());
     }
