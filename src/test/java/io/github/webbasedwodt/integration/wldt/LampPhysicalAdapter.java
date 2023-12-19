@@ -24,6 +24,7 @@ import it.wldt.adapter.physical.PhysicalAssetRelationship;
 import it.wldt.adapter.physical.event.PhysicalAssetActionWldtEvent;
 import it.wldt.adapter.physical.event.PhysicalAssetPropertyWldtEvent;
 import it.wldt.adapter.physical.event.PhysicalAssetRelationshipInstanceCreatedWldtEvent;
+import it.wldt.adapter.physical.event.PhysicalAssetRelationshipInstanceDeletedWldtEvent;
 import it.wldt.exception.EventBusException;
 import it.wldt.exception.PhysicalAdapterException;
 
@@ -93,9 +94,16 @@ public final class LampPhysicalAdapter extends PhysicalAdapter {
 
     private void emulatedDevice() {
         try {
+            final var instance = locatedInside.createRelationshipInstance("http://example.com/house");
             publishPhysicalAssetRelationshipCreatedWldtEvent(
                     new PhysicalAssetRelationshipInstanceCreatedWldtEvent<>(
-                            locatedInside.createRelationshipInstance("http://example.com/house")
+                            instance
+                    )
+            );
+            Thread.sleep(EMULATION_WAIT_TIME);
+            publishPhysicalAssetRelationshipDeletedWldtEvent(
+                    new PhysicalAssetRelationshipInstanceDeletedWldtEvent<>(
+                            instance
                     )
             );
             while (true) {
