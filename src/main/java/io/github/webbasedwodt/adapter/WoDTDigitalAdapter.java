@@ -193,7 +193,15 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
 
         try {
             digitalTwinState.getPropertyList().ifPresent(properties ->
-                    properties.forEach(property -> this.dtdManager.addProperty(property.getKey())));
+                    properties.forEach(property -> {
+                        this.getConfiguration().getOntology().convertPropertyValue(
+                                property.getKey(),
+                                property.getValue()
+                        ).ifPresent(triple ->
+                                this.dtkgEngine.addDigitalTwinPropertyUpdate(triple.getLeft(), triple.getRight())
+                        );
+                        this.dtdManager.addProperty(property.getKey());
+                    }));
             digitalTwinState.getRelationshipList().ifPresent(relationships ->
                     relationships.forEach(relationship -> this.dtdManager.addRelationship(relationship.getName())));
             digitalTwinState.getActionList().ifPresent(actions ->
