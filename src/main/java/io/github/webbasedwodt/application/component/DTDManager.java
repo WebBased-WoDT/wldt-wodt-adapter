@@ -16,12 +16,10 @@
 
 package io.github.webbasedwodt.application.component;
 
-import io.github.sanecity.wot.thing.Thing;
-
 /**
  * This interface models the DTD Manager component of the Abstract Architecture.
  */
-public interface DTDManager {
+public interface DTDManager extends DTDManagerReader {
     /**
      * Add a property to the DTD.
      * @param rawPropertyName the raw name of the property to add
@@ -67,10 +65,4 @@ public interface DTDManager {
      * @return true is correctly added, false instead
      */
     boolean addPlatform(String platformUrl);
-
-    /**
-     * Obtain the Digital Twin Descriptor.
-     * @return Digital Twin Descriptor implemented with a Thing Description
-     */
-    Thing<?, ?, ?> getDTD();
 }
