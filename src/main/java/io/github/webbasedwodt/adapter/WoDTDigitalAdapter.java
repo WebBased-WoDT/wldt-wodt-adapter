@@ -59,7 +59,12 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     }
 
     @Override
-    protected void onStateChangePropertyDeleted(final DigitalTwinStateProperty<?> digitalTwinStateProperty) { }
+    protected void onStateChangePropertyDeleted(final DigitalTwinStateProperty<?> digitalTwinStateProperty) {
+        this.getConfiguration()
+                .getOntology()
+                .obtainProperty(digitalTwinStateProperty.getKey())
+                .ifPresent(this.dtkgEngine::removeProperty);
+    }
 
     @Override
     protected void onStatePropertyUpdated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) { }
