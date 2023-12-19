@@ -18,6 +18,7 @@ package io.github.webbasedwodt.adapter;
 
 import io.github.webbasedwodt.application.component.DTDManager;
 import io.github.webbasedwodt.application.component.DTKGEngine;
+import io.github.webbasedwodt.application.component.WoDTWebServer;
 import it.wldt.adapter.digital.DigitalAdapter;
 import it.wldt.core.state.DigitalTwinStateAction;
 import it.wldt.core.state.DigitalTwinStateEvent;
@@ -26,6 +27,7 @@ import it.wldt.core.state.DigitalTwinStateProperty;
 import it.wldt.core.state.DigitalTwinStateRelationship;
 import it.wldt.core.state.DigitalTwinStateRelationshipInstance;
 import it.wldt.core.state.IDigitalTwinState;
+import it.wldt.exception.EventBusException;
 import it.wldt.exception.WldtDigitalTwinStateActionException;
 import it.wldt.exception.WldtDigitalTwinStatePropertyException;
 
@@ -39,6 +41,7 @@ import java.util.stream.Collectors;
 public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterConfiguration> {
     private final DTKGEngine dtkgEngine;
     private final DTDManager dtdManager;
+    private final WoDTWebServer woDTWebServer;
 
     /**
      * Default constructor.
@@ -54,6 +57,20 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
                 this.getConfiguration().getPhysicalAssetId(),
                 this.getConfiguration().getPortNumber()
         );
+        this.woDTWebServer = new WoDTWebServerImpl(
+                this.getConfiguration().getPortNumber(),
+                this.dtkgEngine,
+                this.dtdManager,
+                (actionName, body) -> {
+                    try {
+                        publishDigitalActionWldtEvent(actionName, body);
+                        return true;
+                    } catch (EventBusException e) {
+                        Logger.getLogger(WoDTDigitalAdapter.class.getName())
+                                .info("Impossible to forward action: " + e);
+                        return false;
+                    }
+                });
     }
 
     @Override
@@ -148,7 +165,9 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     }
 
     @Override
-    public void onAdapterStart() { }
+    public void onAdapterStart() {
+        this.woDTWebServer.start();
+    }
 
     @Override
     public void onAdapterStop() {
