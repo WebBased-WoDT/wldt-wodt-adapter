@@ -16,8 +16,13 @@
 
 plugins {
     `java-library`
+    alias(libs.plugins.gitSemVer)
     alias(libs.plugins.java.qa)
     alias(libs.plugins.publish.on.central)
+}
+
+gitSemVer {
+    buildMetadataSeparator.set("-")
 }
 
 group = "io.github.webbasedwodt"
