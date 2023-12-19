@@ -18,6 +18,7 @@ package io.github.webbasedwodt.adapter;
 
 import io.github.webbasedwodt.application.component.DTDManager;
 import io.github.webbasedwodt.application.component.DTKGEngine;
+import io.github.webbasedwodt.application.component.PlatformManagementInterface;
 import io.github.webbasedwodt.application.component.WoDTWebServer;
 import it.wldt.adapter.digital.DigitalAdapter;
 import it.wldt.core.state.DigitalTwinStateAction;
@@ -42,6 +43,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     private final DTKGEngine dtkgEngine;
     private final DTDManager dtdManager;
     private final WoDTWebServer woDTWebServer;
+    private final PlatformManagementInterface platformManagementInterface;
 
     /**
      * Default constructor.
@@ -71,6 +73,8 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
                         return false;
                     }
                 });
+        this.platformManagementInterface = new BasePlatformManagementInterface(
+                this.getConfiguration().getDigitalTwinUri());
     }
 
     @Override
@@ -167,11 +171,16 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     @Override
     public void onAdapterStart() {
         this.woDTWebServer.start();
+        this.getConfiguration().getPlatformToRegister().forEach(platform -> {
+            if (this.platformManagementInterface.registerToPlatform(platform, this.dtdManager.getDTD().toJson())) {
+                this.dtdManager.addPlatform(platform);
+            }
+        });
     }
 
     @Override
     public void onAdapterStop() {
-        // delete from registered platforms
+        this.platformManagementInterface.signalDigitalTwinDeletion();
     }
 
     @Override
