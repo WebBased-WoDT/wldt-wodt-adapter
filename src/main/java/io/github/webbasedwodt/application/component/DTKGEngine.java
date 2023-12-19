@@ -38,6 +38,13 @@ public interface DTKGEngine {
     void addDigitalTwinPropertyUpdate(Property property, Node newValue);
 
     /**
+     * Remove a Digital Twin property within the Digital Twin Knowledge Graph.
+     * @param property the property to delete.
+     * @return true if deleted, false if not-existent.
+     */
+    boolean removeProperty(Property property);
+
+    /**
      * Add a relationship with another Digital Twin.
      * @param relationshipPredicate the associated predicate
      * @param targetIndividual the target individual

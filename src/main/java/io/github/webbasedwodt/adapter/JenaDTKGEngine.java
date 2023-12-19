@@ -59,28 +59,45 @@ public final class JenaDTKGEngine implements DTKGEngine {
     public void addDigitalTwinPropertyUpdate(final Property property, final Node newValue) {
         if (property.getUri().isPresent()) {
             this.writeModel(model -> {
-                this.digitalTwinResource.removeAll(this.model.getProperty(property.getUri().get()));
+                this.removeProperty(property);
                 addProperty(this.digitalTwinResource, Pair.of(property, newValue));
             });
         }
     }
 
     @Override
+    public boolean removeProperty(final Property property) {
+        if (property.getUri().isPresent()
+                && this.digitalTwinResource.hasProperty(this.model.getProperty(property.getUri().get()))) {
+            this.writeModel(model ->
+                this.digitalTwinResource.removeAll(model.getProperty(property.getUri().get()))
+            );
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public void addRelationship(final Property relationshipPredicate, final Individual targetIndividual) {
         if (relationshipPredicate.getUri().isPresent()) {
-            this.writeModel(model -> {
-                this.digitalTwinResource.removeAll(this.model.getProperty(relationshipPredicate.getUri().get()));
-                addProperty(this.digitalTwinResource, Pair.of(relationshipPredicate, targetIndividual));
-            });
+            this.writeModel(model ->
+                    addProperty(this.digitalTwinResource, Pair.of(relationshipPredicate, targetIndividual))
+            );
         }
     }
 
     @Override
     public boolean removeRelationship(final Property relationshipPredicate, final Individual targetIndividual) {
         if (relationshipPredicate.getUri().isPresent()
+                && targetIndividual.getUri().isPresent()
                 && this.digitalTwinResource.hasProperty(this.model.getProperty(relationshipPredicate.getUri().get()))) {
             this.writeModel(model ->
-                    this.digitalTwinResource.removeAll(this.model.getProperty(relationshipPredicate.getUri().get()))
+                    model.remove(
+                            this.digitalTwinResource,
+                            this.model.getProperty(relationshipPredicate.getUri().get()),
+                            model.getResource(targetIndividual.getUri().get())
+                    )
             );
             return true;
         } else {
