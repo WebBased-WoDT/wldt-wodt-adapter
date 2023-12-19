@@ -201,9 +201,9 @@ public final class MirrorShadowingFunction extends ShadowingModelFunction {
                 final PhysicalAssetRelationshipInstance<?> paRelInstance = physicalAssetRelationshipWldtEvent.getBody();
                 if (paRelInstance.getTargetId() instanceof String) {
                     final String relName = paRelInstance.getRelationship().getName();
-                    final String relInstance = (String) paRelInstance.getTargetId();
+                    final String relKey = paRelInstance.getKey();
 
-                    this.digitalTwinState.deleteRelationshipInstance(relName, relInstance);
+                    this.digitalTwinState.deleteRelationshipInstance(relName, relKey);
                 }
             }
         } catch (WldtDigitalTwinStateRelationshipException e) {
