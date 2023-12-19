@@ -16,6 +16,7 @@
 
 package io.github.webbasedwodt.adapter;
 
+import io.github.webbasedwodt.application.component.DTDManager;
 import io.github.webbasedwodt.application.component.DTKGEngine;
 import it.wldt.adapter.digital.DigitalAdapter;
 import it.wldt.core.state.DigitalTwinStateAction;
@@ -25,7 +26,10 @@ import it.wldt.core.state.DigitalTwinStateProperty;
 import it.wldt.core.state.DigitalTwinStateRelationship;
 import it.wldt.core.state.DigitalTwinStateRelationshipInstance;
 import it.wldt.core.state.IDigitalTwinState;
+import it.wldt.exception.WldtDigitalTwinStateActionException;
+import it.wldt.exception.WldtDigitalTwinStatePropertyException;
 
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +38,7 @@ import java.util.stream.Collectors;
  */
 public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterConfiguration> {
     private final DTKGEngine dtkgEngine;
+    private final DTDManager dtdManager;
 
     /**
      * Default constructor.
@@ -43,10 +48,18 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     public WoDTDigitalAdapter(final String digitalAdapterId, final WoDTDigitalAdapterConfiguration configuration) {
         super(digitalAdapterId, configuration);
         this.dtkgEngine = new JenaDTKGEngine(this.getConfiguration().getDigitalTwinUri());
+        this.dtdManager = new WoTDTDManager(
+                this.getConfiguration().getDigitalTwinUri(),
+                this.getConfiguration().getOntology(),
+                this.getConfiguration().getPhysicalAssetId(),
+                this.getConfiguration().getPortNumber()
+        );
     }
 
     @Override
-    protected void onStateChangePropertyCreated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) { }
+    protected void onStateChangePropertyCreated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) {
+        this.dtdManager.addProperty(digitalTwinStateProperty.getKey());
+    }
 
     @Override
     protected void onStateChangePropertyUpdated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) {
@@ -64,6 +77,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
                 .getOntology()
                 .obtainProperty(digitalTwinStateProperty.getKey())
                 .ifPresent(this.dtkgEngine::removeProperty);
+        this.dtdManager.removeProperty(digitalTwinStateProperty.getKey());
     }
 
     @Override
@@ -73,13 +87,17 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     protected void onStatePropertyDeleted(final DigitalTwinStateProperty<?> digitalTwinStateProperty) { }
 
     @Override
-    protected void onStateChangeActionEnabled(final DigitalTwinStateAction digitalTwinStateAction) { }
+    protected void onStateChangeActionEnabled(final DigitalTwinStateAction digitalTwinStateAction) {
+        this.dtdManager.addAction(digitalTwinStateAction.getKey());
+    }
 
     @Override
     protected void onStateChangeActionUpdated(final DigitalTwinStateAction digitalTwinStateAction) { }
 
     @Override
-    protected void onStateChangeActionDisabled(final DigitalTwinStateAction digitalTwinStateAction) { }
+    protected void onStateChangeActionDisabled(final DigitalTwinStateAction digitalTwinStateAction) {
+        this.dtdManager.removeAction(digitalTwinStateAction.getKey());
+    }
 
     @Override
     protected void onStateChangeEventRegistered(final DigitalTwinStateEvent digitalTwinStateEvent) { }
@@ -97,6 +115,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
 
     @Override
     protected void onStateChangeRelationshipCreated(final DigitalTwinStateRelationship<?> digitalTwinStateRelationship) {
+        this.dtdManager.addRelationship(digitalTwinStateRelationship.getName());
     }
 
     @Override
@@ -113,6 +132,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
 
     @Override
     protected void onStateChangeRelationshipDeleted(final DigitalTwinStateRelationship<?> digitalTwinStateRelationship) {
+        this.dtdManager.removeRelationship(digitalTwinStateRelationship.getName());
     }
 
     @Override
@@ -142,6 +162,17 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
                         .map(DigitalTwinStateRelationship::getName)
                         .collect(Collectors.toList()))
         );
+
+        try {
+            digitalTwinState.getPropertyList().ifPresent(properties ->
+                    properties.forEach(property -> this.dtdManager.addProperty(property.getKey())));
+            digitalTwinState.getRelationshipList().ifPresent(relationships ->
+                    relationships.forEach(relationship -> this.dtdManager.addRelationship(relationship.getName())));
+            digitalTwinState.getActionList().ifPresent(actions ->
+                    actions.forEach(action -> this.dtdManager.addAction(action.getKey())));
+        } catch (WldtDigitalTwinStatePropertyException | WldtDigitalTwinStateActionException e) {
+            Logger.getLogger(WoDTDigitalAdapter.class.getName()).info("Error during loading: " + e);
+        }
     }
 
     @Override
