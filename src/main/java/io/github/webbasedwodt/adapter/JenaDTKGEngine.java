@@ -17,6 +17,7 @@
 package io.github.webbasedwodt.adapter;
 
 import io.github.webbasedwodt.application.component.DTKGEngine;
+import io.github.webbasedwodt.application.component.observer.DTKGObserver;
 import io.github.webbasedwodt.model.ontology.BlankNode;
 import io.github.webbasedwodt.model.ontology.Individual;
 import io.github.webbasedwodt.model.ontology.Literal;
@@ -30,6 +31,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFWriter;
 import org.apache.jena.shared.Lock;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -40,6 +42,7 @@ import java.util.function.Consumer;
 public final class JenaDTKGEngine implements DTKGEngine {
     private final Model model;
     private final Resource digitalTwinResource;
+    private final List<DTKGObserver> observers;
 
     /**
      * Default constructor.
@@ -48,20 +51,23 @@ public final class JenaDTKGEngine implements DTKGEngine {
     public JenaDTKGEngine(final String digitalTwinUri) {
         this.model = ModelFactory.createDefaultModel();
         this.digitalTwinResource = this.model.createResource(digitalTwinUri);
+        this.observers = new ArrayList<>();
     }
 
     @Override
     public void removeDigitalTwin() {
         this.writeModel(Model::removeAll);
+        this.notifyObservers();
     }
 
     @Override
     public void addDigitalTwinPropertyUpdate(final Property property, final Node newValue) {
         if (property.getUri().isPresent()) {
             this.writeModel(model -> {
-                this.removeProperty(property);
+                this.digitalTwinResource.removeAll(model.getProperty(property.getUri().get()));
                 addProperty(this.digitalTwinResource, Pair.of(property, newValue));
             });
+            this.notifyObservers();
         }
     }
 
@@ -72,6 +78,7 @@ public final class JenaDTKGEngine implements DTKGEngine {
             this.writeModel(model ->
                 this.digitalTwinResource.removeAll(model.getProperty(property.getUri().get()))
             );
+            this.notifyObservers();
             return true;
         } else {
             return false;
@@ -84,6 +91,7 @@ public final class JenaDTKGEngine implements DTKGEngine {
             this.writeModel(model ->
                     addProperty(this.digitalTwinResource, Pair.of(relationshipPredicate, targetIndividual))
             );
+            this.notifyObservers();
         }
     }
 
@@ -99,6 +107,7 @@ public final class JenaDTKGEngine implements DTKGEngine {
                             model.getResource(targetIndividual.getUri().get())
                     )
             );
+            this.notifyObservers();
             return true;
         } else {
             return false;
@@ -113,6 +122,16 @@ public final class JenaDTKGEngine implements DTKGEngine {
         } finally {
             this.model.leaveCriticalSection();
         }
+    }
+
+    @Override
+    public void addDTKGObserver(final DTKGObserver observer) {
+        this.observers.add(observer);
+    }
+
+    private void notifyObservers() {
+        final String currentDTKG = this.getCurrentDigitalTwinKnowledgeGraph();
+        this.observers.forEach(observer -> observer.notifyNewDTKG(currentDTKG));
     }
 
     private void addProperty(final Resource resourceToAdd, final Pair<Property, Node> predicate) {

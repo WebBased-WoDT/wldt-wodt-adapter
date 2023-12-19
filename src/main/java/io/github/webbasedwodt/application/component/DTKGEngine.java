@@ -61,8 +61,8 @@ public interface DTKGEngine extends DTKGEngineReader {
     boolean removeRelationship(Property relationshipPredicate, Individual targetIndividual);
 
     /**
-     * Obtain the current status of the Digital Twin Knowledge Graph.
-     * @return the current state of the DTKG
+     * Add a {@link DTKGObserver} that will be notified for each DTKG update.
+     * @param observer the observer to add.
      */
-    String getCurrentDigitalTwinKnowledgeGraph();
+    void addDTKGObserver(DTKGObserver observer);
 }
