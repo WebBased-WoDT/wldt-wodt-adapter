@@ -17,7 +17,6 @@
 package io.github.webbasedwodt.adapter;
 
 import io.github.webbasedwodt.application.component.DTKGEngine;
-import io.github.webbasedwodt.model.ontology.DTOntology;
 import it.wldt.adapter.digital.DigitalAdapter;
 import it.wldt.core.state.DigitalTwinStateAction;
 import it.wldt.core.state.DigitalTwinStateEvent;
@@ -27,24 +26,23 @@ import it.wldt.core.state.DigitalTwinStateRelationship;
 import it.wldt.core.state.DigitalTwinStateRelationshipInstance;
 import it.wldt.core.state.IDigitalTwinState;
 
+import java.util.stream.Collectors;
+
 /**
  * This class represents the WLDT Framework Digital Adapter that allows to implement the WoDT Digital Twin layer
  * implementing the components of the Abstract Architecture.
  */
-public final class WoDTDigitalAdapter extends DigitalAdapter<Void> {
-    private final DTOntology ontology;
+public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterConfiguration> {
     private final DTKGEngine dtkgEngine;
 
     /**
      * Default constructor.
      * @param digitalAdapterId the id of the Digital Adapter
-     * @param ontology the ontology to use for the semantics
-     * @param digitalTwinUri the uri of the WoDT Digital Twin
+     * @param configuration the configuration of the Digital Adapter
      */
-    public WoDTDigitalAdapter(final String digitalAdapterId, final DTOntology ontology, final String digitalTwinUri) {
-        super(digitalAdapterId, null);
-        this.ontology = ontology;
-        this.dtkgEngine = new JenaDTKGEngine(digitalTwinUri);
+    public WoDTDigitalAdapter(final String digitalAdapterId, final WoDTDigitalAdapterConfiguration configuration) {
+        super(digitalAdapterId, configuration);
+        this.dtkgEngine = new JenaDTKGEngine(this.getConfiguration().getDigitalTwinUri());
     }
 
     @Override
@@ -52,7 +50,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<Void> {
 
     @Override
     protected void onStateChangePropertyUpdated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) {
-        this.ontology.convertPropertyValue(
+        this.getConfiguration().getOntology().convertPropertyValue(
                 digitalTwinStateProperty.getKey(),
                 digitalTwinStateProperty.getValue()
         ).ifPresent(triple ->
@@ -100,7 +98,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<Void> {
     protected void onStateChangeRelationshipInstanceCreated(
             final DigitalTwinStateRelationshipInstance<?> digitalTwinStateRelationshipInstance
     ) {
-        this.ontology.convertRelationship(
+        this.getConfiguration().getOntology().convertRelationship(
                 digitalTwinStateRelationshipInstance.getRelationshipName(),
                 digitalTwinStateRelationshipInstance.getTargetId().toString()
         ).ifPresent(triple ->
@@ -116,7 +114,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<Void> {
     protected void onStateChangeRelationshipInstanceDeleted(
             final DigitalTwinStateRelationshipInstance<?> digitalTwinStateRelationshipInstance
     ) {
-        this.ontology.convertRelationship(
+        this.getConfiguration().getOntology().convertRelationship(
                 digitalTwinStateRelationshipInstance.getRelationshipName(),
                 digitalTwinStateRelationshipInstance.getTargetId().toString()
         ).ifPresent(triple ->
@@ -125,9 +123,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<Void> {
     }
 
     @Override
-    public void onAdapterStart() {
-        // start the components
-    }
+    public void onAdapterStart() { }
 
     @Override
     public void onAdapterStop() {
@@ -137,7 +133,9 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<Void> {
     @Override
     public void onDigitalTwinSync(final IDigitalTwinState digitalTwinState) {
         digitalTwinState.getRelationshipList().ifPresent(relationships ->
-                observeDigitalTwinRelationships(relationships.stream().map(DigitalTwinStateRelationship::getName).toList())
+                observeDigitalTwinRelationships(relationships.stream()
+                        .map(DigitalTwinStateRelationship::getName)
+                        .collect(Collectors.toList()))
         );
     }
 

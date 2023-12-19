@@ -17,6 +17,7 @@
 package io.github.webbasedwodt.integration.wldt;
 
 import io.github.webbasedwodt.adapter.WoDTDigitalAdapter;
+import io.github.webbasedwodt.adapter.WoDTDigitalAdapterConfiguration;
 import it.wldt.core.engine.WldtEngine;
 import it.wldt.exception.EventBusException;
 import it.wldt.exception.ModelException;
@@ -41,9 +42,8 @@ public final class LampDT {
             digitalTwinEngine.addPhysicalAdapter(new LampPhysicalAdapter());
             digitalTwinEngine.addDigitalAdapter(new WoDTDigitalAdapter(
                     "wodt-dt-adapter",
-                    new LampDTOntology(),
-                    "https://example.com/dt")
-            );
+                    new WoDTDigitalAdapterConfiguration("https://example.com/dt", new LampDTOntology())
+            ));
             digitalTwinEngine.startLifeCycle();
         } catch (ModelException
                  | EventBusException
