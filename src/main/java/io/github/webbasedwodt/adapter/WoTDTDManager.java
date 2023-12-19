@@ -134,12 +134,12 @@ public final class WoTDTDManager implements DTDManager {
             this.properties.forEach(thingDescription::addProperty);
             this.relationships.forEach(thingDescription::addProperty);
             this.actions.forEach(thingDescription::addAction);
-            thingDescription.getActions().forEach((name, action) -> {
+            thingDescription.getActions().forEach((name, action) ->
                 action.addForm(new Form.Builder()
                         .addOp(Operation.INVOKE_ACTION)
                         .setHref("http://localhost:" + this.portNumber + "/action/" + name)
-                        .build());
-            });
+                        .build())
+            );
             return thingDescription;
         } catch (WotException e) {
             Logger.getLogger(WoTDTDManager.class.getName()).info(" for: " + e);
