@@ -18,6 +18,9 @@ package io.github.webbasedwodt.adapter;
 
 import io.github.webbasedwodt.model.ontology.DTOntology;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Configuration for the {@link WoDTDigitalAdapter}.
  */
@@ -26,6 +29,7 @@ public final class WoDTDigitalAdapterConfiguration {
     private final String digitalTwinUri;
     private final int portNumber;
     private final String physicalAssetId;
+    private final Set<String> platformToRegister;
 
     /**
      * Default constructor.
@@ -33,16 +37,19 @@ public final class WoDTDigitalAdapterConfiguration {
      * @param ontology the ontology to use for the semantics
      * @param portNumber the port number where to expose services
      * @param physicalAssetId the id of the associated physical asset
+     * @param platformToRegister the platforms to which register
      */
     public WoDTDigitalAdapterConfiguration(
             final String digitalTwinUri,
             final DTOntology ontology,
             final int portNumber,
-            final String physicalAssetId) {
+            final String physicalAssetId,
+            final Set<String> platformToRegister) {
         this.digitalTwinUri = digitalTwinUri;
         this.ontology = ontology;
         this.portNumber = portNumber;
         this.physicalAssetId = physicalAssetId;
+        this.platformToRegister = new HashSet<>(platformToRegister);
     }
 
     /**
@@ -75,5 +82,13 @@ public final class WoDTDigitalAdapterConfiguration {
      */
     public String getPhysicalAssetId() {
         return this.physicalAssetId;
+    }
+
+    /**
+     * Obtain the platform to which register.
+     * @return the platforms urls.
+     */
+    public Set<String> getPlatformToRegister() {
+        return new HashSet<>(this.platformToRegister);
     }
 }
