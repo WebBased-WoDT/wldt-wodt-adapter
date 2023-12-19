@@ -24,11 +24,15 @@ group = "io.github.webbasedwodt"
 
 repositories {
     mavenCentral()
+    maven {
+        url = uri("https://git.informatik.uni-hamburg.de/api/v4/groups/sane-public/-/packages/maven")
+    }
 }
 
 dependencies {
     implementation(libs.jena)
     api(libs.wldt)
+    implementation(libs.wot.servient)
     testImplementation(libs.bundles.java.testing)
     testRuntimeOnly(libs.junit.engine)
 }
