@@ -24,6 +24,7 @@ import it.wldt.exception.ModelException;
 import it.wldt.exception.WldtConfigurationException;
 import it.wldt.exception.WldtRuntimeException;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -48,7 +49,8 @@ public final class LampDT {
                             "https://example.com/dt",
                             new LampDTOntology(),
                             TEST_PORT_NUMBER,
-                            "lampPA")
+                            "lampPA",
+                            Set.of())
             ));
             digitalTwinEngine.startLifeCycle();
         } catch (ModelException
