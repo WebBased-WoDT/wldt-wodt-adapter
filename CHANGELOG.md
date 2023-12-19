@@ -1,3 +1,15 @@
+## [1.0.1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.0.0...1.0.1) (2023-12-19)
+
+
+### Bug Fixes
+
+* add to the dtkg also the initial value of a property ([08485a1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/08485a1821fb9c63854970fc7c1e659641d12f58))
+
+
+### General maintenance
+
+* avoid useless continuous publishing ([dd6e9fc](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/dd6e9fc81380c59fa682583eecfe241bb22d49ca))
+
 ## 1.0.0 (2023-12-19)
 
 
