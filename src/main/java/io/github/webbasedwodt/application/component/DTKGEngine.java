@@ -16,6 +16,7 @@
 
 package io.github.webbasedwodt.application.component;
 
+import io.github.webbasedwodt.application.component.observer.DTKGObserver;
 import io.github.webbasedwodt.model.ontology.Individual;
 import io.github.webbasedwodt.model.ontology.Node;
 import io.github.webbasedwodt.model.ontology.Property;
@@ -24,7 +25,7 @@ import io.github.webbasedwodt.model.ontology.Property;
  * This interface models the DTKGEngine component of the Abstract Architecture in a compatible way with the WLDT
  * Framework.
  */
-public interface DTKGEngine {
+public interface DTKGEngine extends DTKGEngineReader {
     /**
      * Method that allows to signal the deletion or the stop of the underlying Digital Twin.
      */
