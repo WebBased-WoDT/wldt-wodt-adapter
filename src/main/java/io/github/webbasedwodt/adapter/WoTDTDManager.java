@@ -118,6 +118,11 @@ public final class WoTDTDManager implements DTDManager {
     }
 
     @Override
+    public Set<String> getAvailableActionIds() {
+        return new HashSet<>(this.actions);
+    }
+
+    @Override
     public Thing<?, ?, ?> getDTD() {
         try {
             final ExposedThing thingDescription = new DefaultWot().produce(new Thing.Builder()
@@ -132,7 +137,7 @@ public final class WoTDTDManager implements DTDManager {
             thingDescription.getActions().forEach((name, action) -> {
                 action.addForm(new Form.Builder()
                         .addOp(Operation.INVOKE_ACTION)
-                        .setHref("http://localhost:" + this.portNumber + "/" + name)
+                        .setHref("http://localhost:" + this.portNumber + "/action/" + name)
                         .build());
             });
             return thingDescription;
