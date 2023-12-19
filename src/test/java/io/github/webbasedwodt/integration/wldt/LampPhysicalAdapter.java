@@ -114,7 +114,6 @@ public final class LampPhysicalAdapter extends PhysicalAdapter {
             );
             while (true) {
                 Thread.sleep(EMULATION_WAIT_TIME);
-                publishPhysicalAssetPropertyWldtEvent(new PhysicalAssetPropertyWldtEvent<>(IS_ON_PROPERTY_KEY, status));
                 Logger.getLogger(LampPhysicalAdapter.class.getName()).info("STATUS: " + this.status);
             }
         } catch (EventBusException | InterruptedException e) {
