@@ -3,5 +3,7 @@
                 "37.0"^^<http://www.w3.org/2001/XMLSchema#double>;
         <https://healthcareontology.com/ontology#isBusy>
                 true;
+        <https://purl.org/wodt/availableActionId>
+                "switch-on";
         <https://smartcityontology.com/ontology#isApproaching>
                 <intersection> .

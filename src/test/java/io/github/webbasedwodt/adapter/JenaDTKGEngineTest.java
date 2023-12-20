@@ -50,6 +50,8 @@ class JenaDTKGEngineTest {
         Pair.of(new Property("https://smartcityontology.com/ontology#isApproaching"), new Individual("intersection"))
     );
 
+    private final List<String> actionsList = List.of("switch-on");
+
     private JenaDTKGEngine dtkgEngine;
 
     @BeforeEach
@@ -61,6 +63,7 @@ class JenaDTKGEngineTest {
         this.relationshipList.forEach(relationship ->
                 this.dtkgEngine.addRelationship(relationship.getLeft(), relationship.getRight())
         );
+        this.actionsList.forEach(action -> this.dtkgEngine.addActionId(action));
     }
 
     @Test
@@ -109,6 +112,32 @@ class JenaDTKGEngineTest {
         assertFalse(this.dtkgEngine.removeRelationship(
                 new Property("http://non-existent-uri"),
                 new Individual("intersection"))
+        );
+    }
+
+    @Test
+    @DisplayName("It should be possible to delete an existent action")
+    void testDTKGActionDeletion() {
+        assertTrue(this.dtkgEngine.removeActionId(this.actionsList.get(0)));
+        assertFalse(this.dtkgEngine.getCurrentDigitalTwinKnowledgeGraph().contains(this.actionsList.get(0)));
+    }
+
+    @Test
+    @DisplayName("The request of deletion of a non-existent action should be correctly handled")
+    void testDTKGNotExistentActionDeletion() {
+        assertFalse(this.dtkgEngine.removeActionId("not-existent-action"));
+    }
+
+    @Test
+    @DisplayName("The dtkg engine delete the correct statement when deleting an action: adding and removing an action"
+            + "will result in the previous state")
+    void testDTKGActionAdditionAndDeletion() {
+        final String newActionName = "another-action";
+        this.dtkgEngine.addActionId(newActionName);
+        this.dtkgEngine.removeActionId(newActionName);
+        assertEquals(
+                TestingUtils.readResourceFile("DTKGWithRelationshipsTurtle.ttl").orElse(""),
+                this.dtkgEngine.getCurrentDigitalTwinKnowledgeGraph()
         );
     }
 }
