@@ -57,6 +57,11 @@ public enum WoDTVocabulary {
     AUGMENTED_INTERACTION(BASE_URI.uri + "augmentedInteraction"),
 
     /**
+     * Available action id predicate.
+     */
+    AVAILABLE_ACTION_ID(BASE_URI.uri + "availableActionId"),
+
+    /**
      * Version predicate.
      */
     VERSION(BASE_URI.uri + "version");
