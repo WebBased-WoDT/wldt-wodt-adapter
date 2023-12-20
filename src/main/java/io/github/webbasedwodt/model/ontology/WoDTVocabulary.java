@@ -78,4 +78,10 @@ public enum WoDTVocabulary {
     public String getUri() {
         return this.uri;
     }
+
+
+    @Override
+    public String toString() {
+        return this.getUri();
+    }
 }
