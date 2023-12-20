@@ -23,10 +23,12 @@ import io.github.webbasedwodt.model.ontology.Individual;
 import io.github.webbasedwodt.model.ontology.Literal;
 import io.github.webbasedwodt.model.ontology.Node;
 import io.github.webbasedwodt.model.ontology.Property;
+import io.github.webbasedwodt.model.ontology.WoDTVocabulary;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFWriter;
 import org.apache.jena.shared.Lock;
@@ -112,6 +114,36 @@ final class JenaDTKGEngine implements DTKGEngine {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void addActionId(final String actionId) {
+        this.writeModel(model ->
+                this.digitalTwinResource.addLiteral(
+                        this.model.createProperty(WoDTVocabulary.AVAILABLE_ACTION_ID.getUri()),
+                        actionId
+                )
+        );
+        this.notifyObservers();
+    }
+
+    @Override
+    public boolean removeActionId(final String actionId) {
+        if (this.model.containsLiteral(
+                this.digitalTwinResource,
+                this.model.getProperty(WoDTVocabulary.AVAILABLE_ACTION_ID.getUri()),
+                actionId)
+        ) {
+            this.writeModel(model ->
+                    model.remove(
+                            this.digitalTwinResource,
+                            model.getProperty(WoDTVocabulary.AVAILABLE_ACTION_ID.getUri()),
+                            ResourceFactory.createStringLiteral(actionId)
+                    )
+            );
+            return true;
+        }
+        return false;
     }
 
     @Override

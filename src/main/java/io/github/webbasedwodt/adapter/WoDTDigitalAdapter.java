@@ -110,6 +110,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     @Override
     protected void onStateChangeActionEnabled(final DigitalTwinStateAction digitalTwinStateAction) {
         this.dtdManager.addAction(digitalTwinStateAction.getKey());
+        this.dtkgEngine.addActionId(digitalTwinStateAction.getKey());
     }
 
     @Override
@@ -118,6 +119,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     @Override
     protected void onStateChangeActionDisabled(final DigitalTwinStateAction digitalTwinStateAction) {
         this.dtdManager.removeAction(digitalTwinStateAction.getKey());
+        this.dtkgEngine.removeActionId(digitalTwinStateAction.getKey());
     }
 
     @Override
@@ -205,7 +207,10 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
             digitalTwinState.getRelationshipList().ifPresent(relationships ->
                     relationships.forEach(relationship -> this.dtdManager.addRelationship(relationship.getName())));
             digitalTwinState.getActionList().ifPresent(actions ->
-                    actions.forEach(action -> this.dtdManager.addAction(action.getKey())));
+                    actions.forEach(action -> {
+                        this.dtdManager.addAction(action.getKey());
+                        this.dtkgEngine.addActionId(action.getKey());
+                    }));
         } catch (WldtDigitalTwinStatePropertyException | WldtDigitalTwinStateActionException e) {
             Logger.getLogger(WoDTDigitalAdapter.class.getName()).info("Error during loading: " + e);
         }

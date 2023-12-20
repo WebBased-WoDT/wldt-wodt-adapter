@@ -61,6 +61,19 @@ public interface DTKGEngine extends DTKGEngineReader {
     boolean removeRelationship(Property relationshipPredicate, Individual targetIndividual);
 
     /**
+     * Add an available action on the Digital Twin Knowledge Graph.
+     * @param actionId the action identifier to identify the available action.
+     */
+    void addActionId(String actionId);
+
+    /**
+     * Remove an action from the Digital Twin Knowledge Graph.
+     * @param actionId the action identifier to remove
+     * @return true if correctly deleted, false if the action id doesn't exist
+     */
+    boolean removeActionId(String actionId);
+
+    /**
      * Add a {@link DTKGObserver} that will be notified for each DTKG update.
      * @param observer the observer to add.
      */
