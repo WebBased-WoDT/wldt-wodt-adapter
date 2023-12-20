@@ -1,3 +1,30 @@
+## [1.1.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.0.1...1.1.0) (2023-12-20)
+
+
+### Features
+
+* include the availability of actions within the Digital Twin Knowledge Graph ([114735e](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/114735ed276c941885c9deb9c763bc1b4378ad01))
+
+
+### Dependency updates
+
+* **deps:** update dependency org.apache.jena:apache-jena-libs to v4.10.0 ([58c7a87](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/58c7a874bdd9ab48f2c987c8d50f05ec9171700e))
+
+
+### Bug Fixes
+
+* fix string serialization of wodt vocabulary ([47d178f](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/47d178fef11c9e9eca4a2914eea0ef31b159af63))
+
+
+### Tests
+
+* adapt test file formatting to new apache jena version ([096f91d](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/096f91d8fec331baf355f10a8490fea0306ce0e1))
+
+
+### General maintenance
+
+* add available action id predicate to vocabulary ([f1f6f3f](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/f1f6f3f09d36f60ef245aa05385a1f9222d43e7a))
+
 ## [1.0.1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.0.0...1.0.1) (2023-12-19)
 
 
