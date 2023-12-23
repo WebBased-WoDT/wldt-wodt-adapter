@@ -1,0 +1,133 @@
+openapi: 3.0.0
+servers:
+  - description: WoDT Digital Twin API - WLDT Framework implementation
+    url: http://localhost:<port>
+info:
+  description: This is the API of exposed by the WoDT Digital Twin
+  version: 1.0.0
+  title: WoDT Digital Twin API - WLDT Framework implementation
+  contact:
+    email: andrea.giulianelli4@studio.unibo.it
+  license:
+    name: Apache 2.0 License
+    url: 'https://www.apache.org/licenses/LICENSE-2.0'
+
+tags:
+  - name: WoDT Digital Twin Interface API
+    description: This is the API exposed by the WoDT Digital Twin Interface for Consumers.
+
+paths:
+  /dtkg:
+    get:
+      tags:
+        - WoDT Digital Twin Interface API
+      summary: obtain the current Digital Twin Knowledge Graph
+      operationId: getDigitalTwinKnowledgeGraph
+      description: obtain the current Digital Twin Knowledge Graph
+      responses:
+        '200':
+          description: the Digital Twin Knowledge Graph
+          content:
+            text/turtle:
+              schema:
+                type: string
+                example: |
+                  <http://localhost:3000/>
+                    <https://lampontology.com/ontology#isOn>
+                            false;
+                    <https://lampontology/ontology#isLocatedInside>
+                            <http://example.com/house>;
+                    <https://purl.org/wodt/availableActionId>
+                            "switch-action-key" .
+        
+
+        '204':
+          description: the current Digital Twin Knwoledge Graph is empty
+
+  /dtd:
+    get:
+      tags:
+        - WoDT Digital Twin Interface API
+      summary: obtain the current Digital Twin Descriptor of the WoDT Digital Twin
+      operationId: getDigitalTwinDescriptor
+      description: obtain the current Digital Twin Descriptor of the WoDT Digital Twin
+      responses:
+        '200':
+          description: the Digital Twin Descriptor
+          content:
+            application/td+json:
+              schema:
+                example: |
+                  {
+                    "id": "http://localhost:3000/",
+                    "properties": {
+                        "is-on-property-key": {
+                            "type": "string",
+                            "observable": true,
+                            "readOnly": true,
+                            "@type": "https://www.w3.org/2001/XMLSchema#boolean",
+                            "https://purl.org/wodt/domainPredicate": "https://lampontology.com/ontology#isOn",
+                            "https://purl.org/wodt/augmentedInteraction": false
+                        },
+                        "located-inside": {
+                            "type": "string",
+                            "observable": true,
+                            "readOnly": true,
+                            "@type": "https://homeontology/ontology#Room",
+                            "https://purl.org/wodt/domainPredicate": "https://lampontology/ontology#isLocatedInside"
+                        },
+                        "snapshot": {
+                            "forms": [
+                                {
+                                    "href": "ws://localhost:3000/dtkg",
+                                    "op": [
+                                        "observeproperty"
+                                    ],
+                                    "subprotocol": "websocket"
+                                }
+                            ],
+                            "type": "string",
+                            "observable": true,
+                            "readOnly": true
+                        }
+                    },
+                    "actions": {
+                        "switch-action-key": {
+                            "forms": [
+                                {
+                                    "href": "http://localhost:3000/action/switch-action-key",
+                                    "op": [
+                                        "invokeaction"
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    "@context": "https://www.w3.org/2019/wot/td/v1",
+                    "https://purl.org/wodt/version": "1.0.0",
+                    "links": [],
+                    "https://purl.org/wodt/physicalAssetId": "lampPA"
+                  }
+        '204':
+          description: the current Digital Twin Descriptor is empty
+
+  /action/{actionName}:
+    post:
+      tags:
+        - WoDT Digital Twin Interface API
+      summary: request the execution of an action to the WoDT Digital Twin
+      operationId: invokeAction
+      description: request the execution of an action to the WoDT Digital Twin
+      parameters:
+        - in: path
+          name: actionName
+          description: the id of the action to invoke
+          example: switch-action-key
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: the action invokation has been elaborated by the WoDT Digital Twin
+        '400':
+          description: invalid action id provided or action currently not available
