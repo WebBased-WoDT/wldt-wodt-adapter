@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * This class provide an implementation of the {@link io.github.webbasedwodt.application.component.DTDManager} using
@@ -142,7 +141,6 @@ final class WoTDTDManager implements DTDManager {
             );
             return thingDescription;
         } catch (WotException e) {
-            Logger.getLogger(WoTDTDManager.class.getName()).info(" for: " + e);
             throw new IllegalStateException("Impossible to create the WoT DTD Manager in the current state", e);
         }
     }
