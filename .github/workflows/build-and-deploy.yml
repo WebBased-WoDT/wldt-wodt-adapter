@@ -114,6 +114,9 @@ jobs:
           code-documentation-generation-command: ./gradlew javadoc
           code-documentation-dst-folder: './build/docs/javadoc'
           code-documentation-site-folder: 'documentation/code-doc'
+          should-generate-openapi-documentation: true
+          openapi-documentation-input-file: 'docs/rest-api/rest-api-docs.yml'
+          openapi-documentation-dst-folder: 'documentation/openapi-doc'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   success:
