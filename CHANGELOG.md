@@ -1,3 +1,31 @@
+## [1.1.1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.1.0...1.1.1) (2023-12-23)
+
+
+### Dependency updates
+
+* **deps:** update plugin java-qa to v1.31.0 ([95743fd](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/95743fd5c8ae5e3c6b97f98e753847b762c347c0))
+
+
+### Documentation
+
+* add rest api documentation ([0a4a2ee](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/0a4a2ee37fc318238bace97cbc56ac001a45d966))
+
+
+### Tests
+
+* add tests on dtkg engine action part ([a4c2b8b](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/a4c2b8b158730ee79dd1e7a4ce37a8d750136328))
+
+
+### Build and continuous integration
+
+* configure ci to deploy rest api documentation ([1349a35](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/1349a351cf6d825c7a6d4e9c8568445cb03dee57))
+
+
+### Style improvements
+
+* remove useless logging ([633b969](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/633b969a3e9d4f5623c603cae8a6421826312021))
+* rename variable to be more explicit ([a1afdcc](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/a1afdcc0652d68d8ce1c09577b6749685320b356))
+
 ## [1.1.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.0.1...1.1.0) (2023-12-20)
 
 
