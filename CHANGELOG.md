@@ -1,3 +1,21 @@
+## [1.1.2](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.1.1...1.1.2) (2023-12-24)
+
+
+### Dependency updates
+
+* **deps:** update plugin gitsemver to v2.0.5 ([85fbfc4](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/85fbfc43bb48ebfb9d83aacb62a3c22a0819d1d0))
+* **deps:** update plugin publish-on-central to v5.0.22 ([de6f420](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/de6f4204a7c6f72caa4f32476721a1e9cc8b336b))
+
+
+### Performance improvements
+
+* allow to maintain the websocket active for longer period of time ([45c0221](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/45c0221be7053882e0ea99e7f1479e32e1a14846))
+
+
+### General maintenance
+
+* update README ([18108d6](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/18108d69b64c8569788607340d8800d15eec65c6))
+
 ## [1.1.1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.1.0...1.1.1) (2023-12-23)
 
 
