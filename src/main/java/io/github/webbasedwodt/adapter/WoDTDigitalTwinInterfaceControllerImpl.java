@@ -79,7 +79,10 @@ final class WoDTDigitalTwinInterfaceControllerImpl implements WoDTDigitalTwinInt
 
     @Override
     public void routeGetDigitalTwinKnowledgeGraphEvents(final WsConfig wsContext) {
-        wsContext.onConnect(webSockets::add);
+        wsContext.onConnect(context -> {
+            context.enableAutomaticPings();
+            this.webSockets.add(context);
+        });
         wsContext.onClose(webSockets::remove);
     }
 
