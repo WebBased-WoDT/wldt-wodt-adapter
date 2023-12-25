@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.1.2...1.2.0) (2023-12-25)
+
+
+### Features
+
+* add digital twin type in the Digital Twin Descriptor ([d8f698c](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/d8f698c24b0b31ea748077c42d94709f4b3cfb68))
+
 ## [1.1.2](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.1.1...1.1.2) (2023-12-24)
 
 
