@@ -21,6 +21,7 @@ import io.github.sanecity.wot.WotException;
 import io.github.sanecity.wot.thing.Context;
 import io.github.sanecity.wot.thing.ExposedThing;
 import io.github.sanecity.wot.thing.Thing;
+import io.github.sanecity.wot.thing.Type;
 import io.github.sanecity.wot.thing.form.Form;
 import io.github.sanecity.wot.thing.form.Operation;
 import io.github.sanecity.wot.thing.property.ExposedThingProperty;
@@ -146,6 +147,7 @@ final class WoTDTDManager implements DTDManager {
     }
 
     private void initializeThingDescription(final ExposedThing thingDescription) {
+        thingDescription.setObjectType(new Type(this.ontology.getDigitalTwinType()));
         thingDescription.addProperty(SNAPSHOT_DTD_PROPERTY, new ExposedThingProperty.Builder()
                 .setReadOnly(true)
                 .setObservable(true)
