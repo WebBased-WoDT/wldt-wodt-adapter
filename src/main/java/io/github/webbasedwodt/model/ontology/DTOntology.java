@@ -67,4 +67,11 @@ public interface DTOntology {
      * @return an optional that is filled with the Pair of the mapped Property and its mapped target uri if possible
      */
     Optional<Pair<Property, Individual>> convertRelationship(String rawRelationship, String targetUri);
+
+    /**
+     * Obtain the semantic type that describe the action.
+     * @param rawAction the input rawAction to get the semantic type
+     * @return an optional with the type of the action
+     */
+    Optional<String> obtainActionType(String rawAction);
 }
