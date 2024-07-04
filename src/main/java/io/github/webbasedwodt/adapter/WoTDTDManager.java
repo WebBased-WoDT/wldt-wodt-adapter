@@ -22,6 +22,7 @@ import io.github.sanecity.wot.thing.Context;
 import io.github.sanecity.wot.thing.ExposedThing;
 import io.github.sanecity.wot.thing.Thing;
 import io.github.sanecity.wot.thing.Type;
+import io.github.sanecity.wot.thing.action.ThingAction;
 import io.github.sanecity.wot.thing.form.Form;
 import io.github.sanecity.wot.thing.form.Operation;
 import io.github.sanecity.wot.thing.property.ExposedThingProperty;
@@ -55,7 +56,7 @@ final class WoTDTDManager implements DTDManager {
     private final List<WoDTDigitalTwinsPlatformLink> platformLinks;
     private final Map<String, ThingProperty<Object>> properties;
     private final Map<String, ThingProperty<Object>> relationships;
-    private final Set<String> actions;
+    private final Map<String, ThingAction<Object, Object>> actions;
 
 
     /**
@@ -76,7 +77,7 @@ final class WoTDTDManager implements DTDManager {
         this.platformLinks = Collections.synchronizedList(new ArrayList<>());
         this.properties = new HashMap<>();
         this.relationships = new HashMap<>();
-        this.actions = new HashSet<>();
+        this.actions = new HashMap<>();
     }
 
     @Override
@@ -103,12 +104,12 @@ final class WoTDTDManager implements DTDManager {
 
     @Override
     public void addAction(final String rawActionName) {
-        this.actions.add(rawActionName);
+        this.createThingDescriptionAction(rawActionName).ifPresent(action -> this.actions.put(rawActionName, action));
     }
 
     @Override
     public boolean removeAction(final String rawActionName) {
-        return this.actions.remove(rawActionName);
+        return this.actions.remove(rawActionName) != null;
     }
 
     @Override
@@ -119,7 +120,7 @@ final class WoTDTDManager implements DTDManager {
 
     @Override
     public Set<String> getAvailableActionIds() {
-        return new HashSet<>(this.actions);
+        return new HashSet<>(this.actions.keySet());
     }
 
     @Override
@@ -133,7 +134,8 @@ final class WoTDTDManager implements DTDManager {
             this.initializeThingDescription(thingDescription);
             this.properties.forEach(thingDescription::addProperty);
             this.relationships.forEach(thingDescription::addProperty);
-            this.actions.forEach(thingDescription::addAction);
+            this.actions.forEach((rawActionName, action) ->
+                    thingDescription.addAction(rawActionName, action, () -> { }));
             thingDescription.getActions().forEach((name, action) ->
                 action.addForm(new Form.Builder()
                         .addOp(Operation.INVOKE_ACTION)
@@ -188,6 +190,14 @@ final class WoTDTDManager implements DTDManager {
         } else {
             return Optional.empty();
         }
+    }
+
+    private Optional<ThingAction<Object, Object>> createThingDescriptionAction(final String rawActionName) {
+        return this.ontology.obtainActionType(rawActionName).map(actionType -> new ThingAction.Builder()
+                .setObjectType(actionType)
+                .setInput(null)
+                .setOutput(null)
+                .build());
     }
 
     /**
