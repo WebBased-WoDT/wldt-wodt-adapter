@@ -44,6 +44,10 @@ public final class LampDTOntology implements DTOntology {
             )
     );
 
+    private static Map<String, String> actionMap = Map.of(
+            "switch-action-key", "https://lampontology.com/ontology#SwitchCommand"
+    );
+
     @Override
     public String getDigitalTwinType() {
         return "https://lampontology.com/ontology#Lamp";
@@ -89,6 +93,15 @@ public final class LampDTOntology implements DTOntology {
             return Optional.of(
                     Pair.of(new Property(relationshipMap.get(rawRelationship).getLeft()), new Individual(targetUri))
             );
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<String> obtainActionType(final String rawAction) {
+        if (actionMap.containsKey(rawAction)) {
+            return Optional.of(actionMap.get(rawAction));
         } else {
             return Optional.empty();
         }

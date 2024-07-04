@@ -105,7 +105,7 @@ class WoTDTDManagerTest {
     @Test
     @DisplayName("It should be possible to add an action")
     void testCorrectInformationOnAction() {
-        final String actionName = "turnOn";
+        final String actionName = "switch-action-key";
         this.dtdManager.addAction(actionName);
         final Thing<?, ?, ?> thingDescription = this.dtdManager.getDTD();
         assertTrue(thingDescription.getActions().containsKey(actionName));
@@ -115,7 +115,7 @@ class WoTDTDManagerTest {
     @Test
     @DisplayName("It should be possible to delete an action")
     void testDeletionOfAction() {
-        final String actionName = "turnOn";
+        final String actionName = "switch-action-key";
         this.dtdManager.addAction(actionName);
         assertTrue(this.dtdManager.removeAction(actionName));
         final Thing<?, ?, ?> thingDescription = this.dtdManager.getDTD();

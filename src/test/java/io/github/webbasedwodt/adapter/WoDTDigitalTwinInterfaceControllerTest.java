@@ -95,9 +95,9 @@ class WoDTDigitalTwinInterfaceControllerTest {
     @Test
     @DisplayName("It should be possible to invoke an existent action")
     void testInvokeExistingAction() {
-        this.dtdManager.addAction("actionName");
+        this.dtdManager.addAction("switch-action-key");
         JavalinTest.test(this.app, (server, client) -> {
-            final var response = client.post("/action/actionName");
+            final var response = client.post("/action/switch-action-key");
             assertEquals(HttpStatus.ACCEPTED.getCode(), response.code());
         });
     }
