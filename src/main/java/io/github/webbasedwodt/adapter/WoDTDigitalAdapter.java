@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023. Andrea Giulianelli
+ * Copyright (c) 2024. Andrea Giulianelli
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,19 +21,20 @@ import io.github.webbasedwodt.application.component.DTKGEngine;
 import io.github.webbasedwodt.application.component.PlatformManagementInterface;
 import io.github.webbasedwodt.application.component.WoDTWebServer;
 import it.wldt.adapter.digital.DigitalAdapter;
-import it.wldt.core.state.DigitalTwinStateAction;
-import it.wldt.core.state.DigitalTwinStateEvent;
+import it.wldt.core.state.DigitalTwinState;
+import it.wldt.core.state.DigitalTwinStateChange;
 import it.wldt.core.state.DigitalTwinStateEventNotification;
+import it.wldt.core.state.DigitalTwinStateAction;
 import it.wldt.core.state.DigitalTwinStateProperty;
 import it.wldt.core.state.DigitalTwinStateRelationship;
 import it.wldt.core.state.DigitalTwinStateRelationshipInstance;
-import it.wldt.core.state.IDigitalTwinState;
+import it.wldt.core.state.DigitalTwinStateResource;
 import it.wldt.exception.EventBusException;
 import it.wldt.exception.WldtDigitalTwinStateActionException;
 import it.wldt.exception.WldtDigitalTwinStatePropertyException;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * This class represents the WLDT Framework Digital Adapter that allows to implement the WoDT Digital Twin layer
@@ -78,96 +79,144 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     }
 
     @Override
-    protected void onStateChangePropertyCreated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) {
-        this.dtdManager.addProperty(digitalTwinStateProperty.getKey());
-    }
+    protected void onEventNotificationReceived(
+            final DigitalTwinStateEventNotification<?> digitalTwinStateEventNotification) { }
 
     @Override
-    protected void onStateChangePropertyUpdated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) {
-        this.getConfiguration().getOntology().convertPropertyValue(
-                digitalTwinStateProperty.getKey(),
-                digitalTwinStateProperty.getValue()
-        ).ifPresent(triple ->
-                this.dtkgEngine.addDigitalTwinPropertyUpdate(triple.getLeft(), triple.getRight())
-        );
-    }
-
-    @Override
-    protected void onStateChangePropertyDeleted(final DigitalTwinStateProperty<?> digitalTwinStateProperty) {
-        this.getConfiguration()
-                .getOntology()
-                .obtainProperty(digitalTwinStateProperty.getKey())
-                .ifPresent(this.dtkgEngine::removeProperty);
-        this.dtdManager.removeProperty(digitalTwinStateProperty.getKey());
-    }
-
-    @Override
-    protected void onStatePropertyUpdated(final DigitalTwinStateProperty<?> digitalTwinStateProperty) { }
-
-    @Override
-    protected void onStatePropertyDeleted(final DigitalTwinStateProperty<?> digitalTwinStateProperty) { }
-
-    @Override
-    protected void onStateChangeActionEnabled(final DigitalTwinStateAction digitalTwinStateAction) {
-        this.dtdManager.addAction(digitalTwinStateAction.getKey());
-        this.dtkgEngine.addActionId(digitalTwinStateAction.getKey());
-    }
-
-    @Override
-    protected void onStateChangeActionUpdated(final DigitalTwinStateAction digitalTwinStateAction) { }
-
-    @Override
-    protected void onStateChangeActionDisabled(final DigitalTwinStateAction digitalTwinStateAction) {
-        this.dtdManager.removeAction(digitalTwinStateAction.getKey());
-        this.dtkgEngine.removeActionId(digitalTwinStateAction.getKey());
-    }
-
-    @Override
-    protected void onStateChangeEventRegistered(final DigitalTwinStateEvent digitalTwinStateEvent) { }
-
-    @Override
-    protected void onStateChangeEventRegistrationUpdated(final DigitalTwinStateEvent digitalTwinStateEvent) { }
-
-    @Override
-    protected void onStateChangeEventUnregistered(final DigitalTwinStateEvent digitalTwinStateEvent) { }
-
-    @Override
-    protected void onDigitalTwinStateEventNotificationReceived(
-            final DigitalTwinStateEventNotification<?> digitalTwinStateEventNotification
-    ) { }
-
-    @Override
-    protected void onStateChangeRelationshipCreated(final DigitalTwinStateRelationship<?> digitalTwinStateRelationship) {
-        this.dtdManager.addRelationship(digitalTwinStateRelationship.getName());
-    }
-
-    @Override
-    protected void onStateChangeRelationshipInstanceCreated(
-            final DigitalTwinStateRelationshipInstance<?> digitalTwinStateRelationshipInstance
+    protected void onStateUpdate(
+            final DigitalTwinState newDigitalTwinState,
+            final DigitalTwinState previousDigitalTwinState,
+            final ArrayList<DigitalTwinStateChange> digitalTwinStateChanges
     ) {
-        this.getConfiguration().getOntology().convertRelationship(
-                digitalTwinStateRelationshipInstance.getRelationshipName(),
-                digitalTwinStateRelationshipInstance.getTargetId().toString()
-        ).ifPresent(triple ->
-                this.dtkgEngine.addRelationship(triple.getLeft(), triple.getRight())
-        );
+        if (digitalTwinStateChanges != null && !digitalTwinStateChanges.isEmpty()) {
+            for (final DigitalTwinStateChange change : digitalTwinStateChanges) {
+                final DigitalTwinStateChange.Operation operationPerformed = change.getOperation();
+                final DigitalTwinStateChange.ResourceType changeResourceType = change.getResourceType();
+                final DigitalTwinStateResource changedResource = change.getResource();
+
+                switch (changeResourceType) {
+                    case PROPERTY:
+                    case PROPERTY_VALUE:
+                        if (changedResource instanceof DigitalTwinStateProperty<?>) {
+                            this.handlePropertyUpdate((DigitalTwinStateProperty<?>) changedResource, operationPerformed);
+                        }
+                        break;
+                    case RELATIONSHIP:
+                        if (changedResource instanceof DigitalTwinStateRelationship<?>) {
+                            this.handleRelationshipUpdate(
+                                    (DigitalTwinStateRelationship<?>) changedResource, operationPerformed);
+                        }
+                        break;
+                    case RELATIONSHIP_INSTANCE:
+                        if (changedResource instanceof DigitalTwinStateRelationshipInstance<?>) {
+                            this.handleRelationshipInstanceUpdate(
+                                    (DigitalTwinStateRelationshipInstance<?>) changedResource, operationPerformed);
+                        }
+                        break;
+                    case ACTION:
+                        if (changedResource instanceof DigitalTwinStateAction) {
+                            this.handleActionUpdate((DigitalTwinStateAction) changedResource, operationPerformed);
+                        }
+                        break;
+                    case EVENT:
+                        Logger.getLogger(WoDTDigitalAdapter.class.getName()).info("Events are not currently supported");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
-    @Override
-    protected void onStateChangeRelationshipDeleted(final DigitalTwinStateRelationship<?> digitalTwinStateRelationship) {
-        this.dtdManager.removeRelationship(digitalTwinStateRelationship.getName());
-    }
-
-    @Override
-    protected void onStateChangeRelationshipInstanceDeleted(
-            final DigitalTwinStateRelationshipInstance<?> digitalTwinStateRelationshipInstance
+    private void handlePropertyUpdate(
+            final DigitalTwinStateProperty<?> updatedProperty,
+            final DigitalTwinStateChange.Operation operationPerformed
     ) {
-        this.getConfiguration().getOntology().convertRelationship(
-                digitalTwinStateRelationshipInstance.getRelationshipName(),
-                digitalTwinStateRelationshipInstance.getTargetId().toString()
-        ).ifPresent(triple ->
-                this.dtkgEngine.removeRelationship(triple.getLeft(), triple.getRight())
-        );
+        switch (operationPerformed) {
+            case OPERATION_ADD:
+                this.dtdManager.addProperty(updatedProperty.getKey());
+                break;
+            case OPERATION_REMOVE:
+                this.getConfiguration()
+                    .getOntology()
+                    .obtainProperty(updatedProperty.getKey())
+                    .ifPresent(this.dtkgEngine::removeProperty);
+                this.dtdManager.removeProperty(updatedProperty.getKey());
+                break;
+            case OPERATION_UPDATE:
+            case OPERATION_UPDATE_VALUE:
+                this.getConfiguration().getOntology().convertPropertyValue(
+                    updatedProperty.getKey(),
+                    updatedProperty.getValue()
+                ).ifPresent(triple ->
+                    this.dtkgEngine.addDigitalTwinPropertyUpdate(triple.getLeft(), triple.getRight())
+                );
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void handleRelationshipUpdate(
+            final DigitalTwinStateRelationship<?> updatedRelationship,
+            final DigitalTwinStateChange.Operation operationPerformed
+    ) {
+        switch (operationPerformed) {
+            case OPERATION_ADD:
+                this.dtdManager.addRelationship(updatedRelationship.getName());
+                break;
+            case OPERATION_REMOVE:
+                this.dtdManager.removeRelationship(updatedRelationship.getName());
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void handleRelationshipInstanceUpdate(
+            final DigitalTwinStateRelationshipInstance<?> updatedRelationshipInstance,
+            final DigitalTwinStateChange.Operation operationPerformed
+    ) {
+        switch (operationPerformed) {
+            case OPERATION_ADD:
+                this.getConfiguration().getOntology().convertRelationship(
+                    updatedRelationshipInstance.getRelationshipName(),
+                    updatedRelationshipInstance.getTargetId().toString()
+                ).ifPresent(triple ->
+                    this.dtkgEngine.addRelationship(triple.getLeft(), triple.getRight())
+                );
+                break;
+            case OPERATION_REMOVE:
+                this.getConfiguration().getOntology().convertRelationship(
+                    updatedRelationshipInstance.getRelationshipName(),
+                    updatedRelationshipInstance.getTargetId().toString()
+                ).ifPresent(triple ->
+                    this.dtkgEngine.removeRelationship(triple.getLeft(), triple.getRight())
+                );
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void handleActionUpdate(
+            final DigitalTwinStateAction updatedAction,
+            final DigitalTwinStateChange.Operation operationPerformed
+    ) {
+        switch (operationPerformed) {
+            case OPERATION_ADD: // adds and enables the action
+                this.dtdManager.addAction(updatedAction.getKey());
+                this.dtkgEngine.addActionId(updatedAction.getKey());
+                break;
+            case OPERATION_REMOVE: // only disables the action
+                this.dtkgEngine.removeActionId(updatedAction.getKey());
+                break;
+            case OPERATION_UPDATE: // enables the action
+                this.dtkgEngine.addActionId(updatedAction.getKey());
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -186,12 +235,12 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     }
 
     @Override
-    public void onDigitalTwinSync(final IDigitalTwinState digitalTwinState) {
-        digitalTwinState.getRelationshipList().ifPresent(relationships ->
-                observeDigitalTwinRelationships(relationships.stream()
-                        .map(DigitalTwinStateRelationship::getName)
-                        .collect(Collectors.toList()))
-        );
+    public void onDigitalTwinSync(final DigitalTwinState digitalTwinState) {
+//        digitalTwinState.getRelationshipList().ifPresent(relationships ->
+//                observeDigitalTwinRelationships(relationships.stream()
+//                        .map(DigitalTwinStateRelationship::getName)
+//                        .collect(Collectors.toList()))
+//        );
 
         try {
             digitalTwinState.getPropertyList().ifPresent(properties ->
@@ -217,7 +266,7 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     }
 
     @Override
-    public void onDigitalTwinUnSync(final IDigitalTwinState digitalTwinState) { }
+    public void onDigitalTwinUnSync(final DigitalTwinState digitalTwinState) { }
 
     @Override
     public void onDigitalTwinCreate() { }
