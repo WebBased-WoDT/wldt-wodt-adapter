@@ -1,3 +1,25 @@
+## [3.0.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/2.0.0...3.0.0) (2024-07-05)
+
+### ⚠ BREAKING CHANGES
+
+* rewrite adapter to align to wldt 0.3.0
+
+### Dependency updates
+
+* **deps:** update dependency io.github.wldt:wldt-core to v0.3.0 ([22dde73](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/22dde73ed24cc96c8a6c062c837ca90c8f06d197))
+
+### Bug Fixes
+
+* rewrite adapter to align to wldt 0.3.0 ([2cc422d](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/2cc422d7e5efc555c41534bf91f39e2979509b5a))
+
+### Tests
+
+* align tests to wldt 0.3.0 ([dfec9e2](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/dfec9e28c3c9581b4f90a8f65308d8f48d1532b9))
+
+### Refactoring
+
+* remove commented code ([631b3e0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/631b3e0445ef08dbba741966f9bfe9baba8c839b))
+
 ## [2.0.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/1.2.0...2.0.0) (2024-07-04)
 
 ### ⚠ BREAKING CHANGES
