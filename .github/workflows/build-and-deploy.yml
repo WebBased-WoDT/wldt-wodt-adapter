@@ -79,11 +79,13 @@ jobs:
         with:
           java-version: 11
           distribution: adopt
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Find the version of Node from package.json
+        id: node-version
+        run: echo "version=$(jq -r .engines.node package.json)" >> $GITHUB_OUTPUT
+      - name: Install Node
+        uses: actions/setup-node@v4.0.2
         with:
-          node-version: "lts/*"
-
+          node-version: ${{ steps.node-version.outputs.version }}
       - name: Release library
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
