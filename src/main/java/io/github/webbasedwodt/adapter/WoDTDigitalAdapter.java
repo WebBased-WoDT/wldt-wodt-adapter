@@ -236,12 +236,6 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
 
     @Override
     public void onDigitalTwinSync(final DigitalTwinState digitalTwinState) {
-//        digitalTwinState.getRelationshipList().ifPresent(relationships ->
-//                observeDigitalTwinRelationships(relationships.stream()
-//                        .map(DigitalTwinStateRelationship::getName)
-//                        .collect(Collectors.toList()))
-//        );
-
         try {
             digitalTwinState.getPropertyList().ifPresent(properties ->
                     properties.forEach(property -> {
