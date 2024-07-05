@@ -18,11 +18,15 @@ package io.github.webbasedwodt.integration.wldt;
 
 import io.github.webbasedwodt.adapter.WoDTDigitalAdapter;
 import io.github.webbasedwodt.adapter.WoDTDigitalAdapterConfiguration;
-import it.wldt.core.engine.WldtEngine;
+import it.wldt.core.engine.DigitalTwin;
+import it.wldt.core.engine.DigitalTwinEngine;
 import it.wldt.exception.EventBusException;
 import it.wldt.exception.ModelException;
 import it.wldt.exception.WldtConfigurationException;
+import it.wldt.exception.WldtDigitalTwinStateException;
+import it.wldt.exception.WldtEngineException;
 import it.wldt.exception.WldtRuntimeException;
+import it.wldt.exception.WldtWorkerException;
 
 import java.util.Set;
 import java.util.logging.Logger;
@@ -33,17 +37,20 @@ import java.util.logging.Logger;
 public final class LampDT {
     private static final int TEST_PORT_NUMBER = 3000;
 
-    private LampDT() { }
+    private LampDT() {
+    }
 
     /**
      * Main process.
+     *
      * @param args the args
      */
     public static void main(final String... args) {
         try {
-            final WldtEngine digitalTwinEngine = new WldtEngine(new MirrorShadowingFunction(), "lamp-dt");
-            digitalTwinEngine.addPhysicalAdapter(new LampPhysicalAdapter());
-            digitalTwinEngine.addDigitalAdapter(new WoDTDigitalAdapter(
+            final String digitalTwinId = "lamp-dt";
+            final DigitalTwin digitalTwin = new DigitalTwin(digitalTwinId, new MirrorShadowingFunction());
+            digitalTwin.addPhysicalAdapter(new LampPhysicalAdapter());
+            digitalTwin.addDigitalAdapter(new WoDTDigitalAdapter(
                     "wodt-dt-adapter",
                     new WoDTDigitalAdapterConfiguration(
                             "https://example.com/dt",
@@ -52,11 +59,17 @@ public final class LampDT {
                             "lampPA",
                             Set.of())
             ));
-            digitalTwinEngine.startLifeCycle();
+
+            final DigitalTwinEngine digitalTwinEngine = new DigitalTwinEngine();
+            digitalTwinEngine.addDigitalTwin(digitalTwin);
+            digitalTwinEngine.startDigitalTwin(digitalTwinId);
         } catch (ModelException
-                 | EventBusException
+                 | WldtDigitalTwinStateException
+                 | WldtWorkerException
                  | WldtRuntimeException
-                 | WldtConfigurationException e) {
+                 | EventBusException
+                 | WldtConfigurationException
+                 | WldtEngineException e) {
             Logger.getLogger(LampDT.class.getName()).info(e.getMessage());
         }
     }
