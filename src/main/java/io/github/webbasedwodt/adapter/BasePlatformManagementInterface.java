@@ -22,14 +22,17 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Base implementation of the {@link PlatformManagementInterface}.
  */
 final class BasePlatformManagementInterface implements PlatformManagementInterface {
+    private static final String PATH_TO_PLATFORM_WODT = "/wodt";
     private static final int ACCEPTED_REQUEST_STATUS_CODE = 202;
     private final String digitalTwinUri;
     private final Set<String> platforms;
@@ -48,13 +51,17 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
         if (!this.platforms.contains(platformUrl)) {
             final HttpClient httpClient = HttpClient.newHttpClient();
             final HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(platformUrl))
+                    .uri(getPlatformWoDT(platformUrl))
                     .header("Content-type", "application/td+json")
                     .POST(HttpRequest.BodyPublishers.ofString(currentDtd))
                     .build();
-            return httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
+            final boolean status = httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
                     .join()
                     .statusCode() == ACCEPTED_REQUEST_STATUS_CODE;
+            if (status) {
+                this.platforms.add(platformUrl);
+            }
+            return status;
         } else {
             return false;
         }
@@ -65,10 +72,18 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
         final HttpClient httpClient = HttpClient.newHttpClient();
         this.platforms.forEach(platformUrl -> {
             final HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(platformUrl + "/" + this.digitalTwinUri))
+                    .uri(getPlatformWoDT(platformUrl, this.digitalTwinUri))
                     .DELETE()
                     .build();
             httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
         });
+    }
+
+    private URI getPlatformWoDT(final String platformUrl, final String... path) {
+        String platformWoDT = platformUrl.concat(PATH_TO_PLATFORM_WODT);
+        if (path.length > 0) {
+            platformWoDT = platformUrl.concat(Arrays.stream(path).collect(Collectors.joining("/", "/", "")));
+        }
+        return URI.create(platformWoDT);
     }
 }
