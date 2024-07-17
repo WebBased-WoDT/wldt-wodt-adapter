@@ -10,7 +10,7 @@ A simple library that allows to use the [WLDT Framework](https://github.com/wldt
 | **wldt-wodt-adapter** |       wldt-core 0.2.1        |  wldt-core 0.3.0   |
 |:---------------------:|:----------------------------:|:------------------:|
 |       <= 2.x.y        |      :white_check_mark:      |        :x:         |
-|         3.0.0         |             :x:              | :white_check_mark: |
+|         3.x.y         |             :x:              | :white_check_mark: |
 
 ## Usage
 In order to use the library add the dependency to your project:
