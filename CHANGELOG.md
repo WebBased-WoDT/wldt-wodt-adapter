@@ -1,3 +1,27 @@
+## [3.0.1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/3.0.0...3.0.1) (2024-07-17)
+
+### Dependency updates
+
+* **deps:** update dependency gradle to v8.9 ([fea44f8](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/fea44f87b7242d7efab76679fe59f8476f0b5975))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.87 ([69e23c8](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/69e23c8f01c52bd9faff23952148880a51f20e3c))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.89 ([118ad2f](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/118ad2f1461b08553149cdb82d71cae5f0a78a25))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.90 ([60c3127](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/60c312790c3c7a216176a6db46a3b71176383d8e))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.91 ([d62b9be](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/d62b9be76025626f65444296bb94a18e240504e2))
+
+### Bug Fixes
+
+* use proper platform url ([1f948f7](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/1f948f70bf3fb50dd5b12ce16c097753f0c0a4a7))
+
+### Build and continuous integration
+
+* align node version with package.json file ([cb9da5e](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/cb9da5e9ae5a8efde07c51bb73288ea976d4940a))
+* **deps:** update actions/setup-node action to v4.0.3 ([3374bc1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/3374bc18cd6dc1b238a4ad1dd0418ad542635516))
+* **deps:** update gradle/wrapper-validation-action action to v3.5.0 ([250c7e1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/250c7e1cebde7c84776f16fae88bd146495dc5ff))
+
+### General maintenance
+
+* update readme with compatibility information ([c89c658](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/c89c658c5470f331d6419c4c6f761f0c129b94ad))
+
 ## [3.0.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/2.0.0...3.0.0) (2024-07-05)
 
 ### ⚠ BREAKING CHANGES
