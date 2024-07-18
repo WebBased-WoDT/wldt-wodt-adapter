@@ -59,7 +59,7 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
                     .join()
                     .statusCode() == ACCEPTED_REQUEST_STATUS_CODE;
             if (status) {
-                this.platforms.add(platformUrl);
+                notifyNewRegistration(platformUrl);
             }
             return status;
         } else {
@@ -92,5 +92,10 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
     @Override
     public Set<URI> getRegisteredPlatformUrls() {
         return new HashSet<>(this.platforms);
+    }
+
+    @Override
+    public boolean notifyNewRegistration(final URI platformUrl) {
+        return this.platforms.add(platformUrl);
     }
 }

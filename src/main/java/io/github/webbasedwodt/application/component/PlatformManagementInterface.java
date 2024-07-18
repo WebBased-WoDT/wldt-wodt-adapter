@@ -21,7 +21,8 @@ import java.net.URI;
 /**
  * This interface represent the PlatformManagementInterface component in the Abstract Architecture.
  */
-public interface PlatformManagementInterface extends PlatformManagementInterfaceReader {
+public interface PlatformManagementInterface extends
+        PlatformManagementInterfaceReader, PlatformManagementInterfaceNotifier {
     /**
      * This method allows the component to send the registration request to the passed WoDT Digital Twins Platform.
      * @param platformUrl the platformUrl to which register
