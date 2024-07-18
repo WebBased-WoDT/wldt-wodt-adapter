@@ -16,10 +16,14 @@
 
 package io.github.webbasedwodt.adapter;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.google.gson.JsonParseException;
 import io.github.webbasedwodt.application.component.DTDManagerReader;
 import io.github.webbasedwodt.application.component.DTKGEngine;
+import io.github.webbasedwodt.application.component.PlatformManagementInterfaceNotifier;
 import io.github.webbasedwodt.application.component.WoDTWebServer;
 import io.javalin.Javalin;
+import io.javalin.http.HttpStatus;
 
 import java.util.function.BiFunction;
 
@@ -30,6 +34,7 @@ import java.util.function.BiFunction;
 final class WoDTWebServerImpl implements WoDTWebServer {
     private final int portNumber;
     private final WoDTDigitalTwinInterfaceControllerImpl wodtDigitalTwinInterfaceController;
+    private final PlatformManagementInterfaceAPIControllerImpl platformManagementInterfaceAPIController;
 
     /**
      * Default constructor.
@@ -37,22 +42,30 @@ final class WoDTWebServerImpl implements WoDTWebServer {
      * @param dtkgEngine the DTKGEngine
      * @param dtdManager the DTDManager
      * @param actionHandler handler of action invocation
+     * @param platformManagementInterfaceNotifier the Platform Management Interface Notifier component
      */
     WoDTWebServerImpl(
             final int portNumber,
             final DTKGEngine dtkgEngine,
             final DTDManagerReader dtdManager,
-            final BiFunction<String, String, Boolean> actionHandler
-    ) {
+            final BiFunction<String, String, Boolean> actionHandler,
+            final PlatformManagementInterfaceNotifier platformManagementInterfaceNotifier
+            ) {
         this.portNumber = portNumber;
         this.wodtDigitalTwinInterfaceController = new WoDTDigitalTwinInterfaceControllerImpl(
                 dtkgEngine, dtdManager, actionHandler);
         dtkgEngine.addDTKGObserver(this.wodtDigitalTwinInterfaceController::notifyNewDTKG);
+        this.platformManagementInterfaceAPIController = new PlatformManagementInterfaceAPIControllerImpl(
+                platformManagementInterfaceNotifier
+        );
     }
 
     @Override
     public void start() {
         final Javalin app = Javalin.create().start(this.portNumber);
+        app.exception(JsonMappingException.class, (e, context) -> context.status(HttpStatus.BAD_REQUEST));
+        app.exception(JsonParseException.class, (e, context) -> context.status(HttpStatus.BAD_REQUEST));
         this.wodtDigitalTwinInterfaceController.registerRoutes(app);
+        this.platformManagementInterfaceAPIController.registerRoutes(app);
     }
 }

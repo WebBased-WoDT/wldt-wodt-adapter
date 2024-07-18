@@ -76,7 +76,9 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
                                 .info("Impossible to forward action: " + e);
                         return false;
                     }
-                });
+                },
+                this.platformManagementInterface
+        );
     }
 
     @Override
