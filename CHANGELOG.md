@@ -1,3 +1,34 @@
+## [4.0.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/3.0.1...4.0.0) (2024-07-18)
+
+### ⚠ BREAKING CHANGES
+
+* make DTDManager obtain Platforms from the responsible component and use URIs
+
+### Features
+
+* add endpoint to notify manually addition to a platform ([f20cd64](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/f20cd64e91826201e562abd3d44c5bbb2dacb615))
+
+### Dependency updates
+
+* **deps:** update plugin java-qa to v1.57.1 ([9ee413a](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/9ee413a4b517db1bd2f517c5943ba8e24e55aa1c))
+
+### Tests
+
+* use real uri for integration test ([7ba4279](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/7ba427925197be9358a77673ffe6e50a05c5141c))
+
+### General maintenance
+
+* create platform management interface api for notify external registration to a new platform ([bc92fce](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/bc92fcee7675211c53ee2fb40bc527ed2d2c508a))
+* create platform management interface notifier interface ([a5b6ba6](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/a5b6ba6be01afd5a3294199d8b4a21b5630785f6))
+* create platform registration notification body deserializer class ([83610ed](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/83610ed2e602c118fafdcf96a8aa935185c76f20))
+* include platform management interface notifier features ([ad1d499](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/ad1d4998affc951d81dbbb2b18d478e2d71b25a7))
+* merge pull request [#123](https://github.com/WebBased-WoDT/wldt-wodt-adapter/issues/123) from feature/manual-registration-endpoint ([479c1eb](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/479c1eb3f01bcce7e72587bf943dee1cd121bf44))
+* update readme ([f209e3f](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/f209e3f928d16f2f5540d31d28b6a339ebe6bfa3))
+
+### Refactoring
+
+* make DTDManager obtain Platforms from the responsible component and use URIs ([ea0050e](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/ea0050e3d2e2ca147fda161a669951fd4616fece))
+
 ## [3.0.1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/3.0.0...3.0.1) (2024-07-17)
 
 ### Dependency updates
