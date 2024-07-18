@@ -28,7 +28,6 @@ import it.wldt.exception.WldtEngineException;
 import it.wldt.exception.WldtRuntimeException;
 import it.wldt.exception.WldtWorkerException;
 
-import java.net.URI;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -54,11 +53,11 @@ public final class LampDT {
             digitalTwin.addDigitalAdapter(new WoDTDigitalAdapter(
                     "wodt-dt-adapter",
                     new WoDTDigitalAdapterConfiguration(
-                            "https://example.com/dt",
+                            "http://localhost:" + TEST_PORT_NUMBER,
                             new LampDTOntology(),
                             TEST_PORT_NUMBER,
                             "lampPA",
-                            Set.of(URI.create("http://localhost:4000")))
+                            Set.of())
             ));
 
             final DigitalTwinEngine digitalTwinEngine = new DigitalTwinEngine();
