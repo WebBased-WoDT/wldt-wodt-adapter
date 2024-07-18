@@ -16,17 +16,20 @@
 
 package io.github.webbasedwodt.application.component;
 
+import java.net.URI;
+
 /**
  * This interface represent the PlatformManagementInterface component in the Abstract Architecture.
  */
-public interface PlatformManagementInterface {
+public interface PlatformManagementInterface extends
+        PlatformManagementInterfaceReader, PlatformManagementInterfaceNotifier {
     /**
      * This method allows the component to send the registration request to the passed WoDT Digital Twins Platform.
      * @param platformUrl the platformUrl to which register
      * @param currentDtd the current Digital Twin Descriptor
      * @return true if correctly registered, false instead
      */
-    boolean registerToPlatform(String platformUrl, String currentDtd);
+    boolean registerToPlatform(URI platformUrl, String currentDtd);
 
     /**
      * Signal to the Platform Management Interface the deletion of the managed Digital Twin.

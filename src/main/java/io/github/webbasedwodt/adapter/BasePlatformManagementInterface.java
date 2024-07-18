@@ -35,7 +35,7 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
     private static final String PATH_TO_PLATFORM_WODT = "/wodt";
     private static final int ACCEPTED_REQUEST_STATUS_CODE = 202;
     private final String digitalTwinUri;
-    private final Set<String> platforms;
+    private final Set<URI> platforms;
 
     /**
      * Default constructor.
@@ -47,7 +47,7 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
     }
 
     @Override
-    public boolean registerToPlatform(final String platformUrl, final String currentDtd) {
+    public boolean registerToPlatform(final URI platformUrl, final String currentDtd) {
         if (!this.platforms.contains(platformUrl)) {
             final HttpClient httpClient = HttpClient.newHttpClient();
             final HttpRequest httpRequest = HttpRequest.newBuilder()
@@ -59,7 +59,7 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
                     .join()
                     .statusCode() == ACCEPTED_REQUEST_STATUS_CODE;
             if (status) {
-                this.platforms.add(platformUrl);
+                notifyNewRegistration(platformUrl);
             }
             return status;
         } else {
@@ -77,13 +77,25 @@ final class BasePlatformManagementInterface implements PlatformManagementInterfa
                     .build();
             httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString());
         });
+        this.platforms.clear();
     }
 
-    private URI getPlatformWoDT(final String platformUrl, final String... path) {
-        String platformWoDT = platformUrl.concat(PATH_TO_PLATFORM_WODT);
+    private URI getPlatformWoDT(final URI platformUrl, final String... path) {
+        final String platformUrlString = platformUrl.toString();
+        String platformWoDT = platformUrlString.concat(PATH_TO_PLATFORM_WODT);
         if (path.length > 0) {
-            platformWoDT = platformUrl.concat(Arrays.stream(path).collect(Collectors.joining("/", "/", "")));
+            platformWoDT = platformUrlString.concat(Arrays.stream(path).collect(Collectors.joining("/", "/", "")));
         }
         return URI.create(platformWoDT);
+    }
+
+    @Override
+    public Set<URI> getRegisteredPlatformUrls() {
+        return new HashSet<>(this.platforms);
+    }
+
+    @Override
+    public boolean notifyNewRegistration(final URI platformUrl) {
+        return this.platforms.add(platformUrl);
     }
 }

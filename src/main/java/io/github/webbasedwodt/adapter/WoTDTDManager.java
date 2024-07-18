@@ -28,18 +28,17 @@ import io.github.sanecity.wot.thing.form.Operation;
 import io.github.sanecity.wot.thing.property.ExposedThingProperty;
 import io.github.sanecity.wot.thing.property.ThingProperty;
 import io.github.webbasedwodt.application.component.DTDManager;
+import io.github.webbasedwodt.application.component.PlatformManagementInterfaceReader;
 import io.github.webbasedwodt.model.ontology.DTOntology;
 import io.github.webbasedwodt.model.ontology.Property;
 import io.github.webbasedwodt.model.ontology.WoDTVocabulary;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This class provide an implementation of the {@link io.github.webbasedwodt.application.component.DTDManager} using
@@ -53,7 +52,7 @@ final class WoTDTDManager implements DTDManager {
     private final String physicalAssetId;
     private final DTOntology ontology;
     private final int portNumber;
-    private final List<WoDTDigitalTwinsPlatformLink> platformLinks;
+    private final PlatformManagementInterfaceReader platformManagementInterfaceReader;
     private final Map<String, ThingProperty<Object>> properties;
     private final Map<String, ThingProperty<Object>> relationships;
     private final Map<String, ThingAction<Object, Object>> actions;
@@ -65,16 +64,18 @@ final class WoTDTDManager implements DTDManager {
      * @param ontology the ontology used to obtain the semantics
      * @param physicalAssetId the id of the associated physical asset
      * @param portNumber the port number where to offer the affordances
+     * @param platformManagementInterfaceReader the platform management interface reader reference
      */
     WoTDTDManager(final String digitalTwinUri,
-                         final DTOntology ontology,
-                         final String physicalAssetId,
-                         final int portNumber) {
+                  final DTOntology ontology,
+                  final String physicalAssetId,
+                  final int portNumber,
+                  final PlatformManagementInterfaceReader platformManagementInterfaceReader) {
         this.digitalTwinUri = digitalTwinUri;
         this.ontology = ontology;
         this.physicalAssetId = physicalAssetId;
         this.portNumber = portNumber;
-        this.platformLinks = Collections.synchronizedList(new ArrayList<>());
+        this.platformManagementInterfaceReader = platformManagementInterfaceReader;
         this.properties = new HashMap<>();
         this.relationships = new HashMap<>();
         this.actions = new HashMap<>();
@@ -110,12 +111,6 @@ final class WoTDTDManager implements DTDManager {
     @Override
     public boolean removeAction(final String rawActionName) {
         return this.actions.remove(rawActionName) != null;
-    }
-
-    @Override
-    public boolean addPlatform(final String platformUrl) {
-        this.platformLinks.add(new WoDTDigitalTwinsPlatformLink(platformUrl));
-        return true;
     }
 
     @Override
@@ -162,7 +157,13 @@ final class WoTDTDManager implements DTDManager {
                 .setHref("ws://localhost:" + this.portNumber + "/dtkg")
                 .setSubprotocol("websocket")
                 .build());
-        thingDescription.getMetadata().put("links", this.platformLinks);
+        thingDescription.getMetadata()
+                        .put("links",
+                            this.platformManagementInterfaceReader
+                                .getRegisteredPlatformUrls()
+                                .stream().map(uri -> new WoDTDigitalTwinsPlatformLink(uri.toString()))
+                                .collect(Collectors.toList())
+                        );
         thingDescription.getMetadata().put(WoDTVocabulary.PHYSICAL_ASSET_ID.getUri(), this.physicalAssetId);
         thingDescription.getMetadata().put(WoDTVocabulary.VERSION.getUri(), VERSION);
     }

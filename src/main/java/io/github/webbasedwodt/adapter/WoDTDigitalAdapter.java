@@ -53,12 +53,15 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
      */
     public WoDTDigitalAdapter(final String digitalAdapterId, final WoDTDigitalAdapterConfiguration configuration) {
         super(digitalAdapterId, configuration);
+        this.platformManagementInterface = new BasePlatformManagementInterface(
+                this.getConfiguration().getDigitalTwinUri());
         this.dtkgEngine = new JenaDTKGEngine(this.getConfiguration().getDigitalTwinUri());
         this.dtdManager = new WoTDTDManager(
                 this.getConfiguration().getDigitalTwinUri(),
                 this.getConfiguration().getOntology(),
                 this.getConfiguration().getPhysicalAssetId(),
-                this.getConfiguration().getPortNumber()
+                this.getConfiguration().getPortNumber(),
+                this.platformManagementInterface
         );
         this.woDTWebServer = new WoDTWebServerImpl(
                 this.getConfiguration().getPortNumber(),
@@ -73,9 +76,9 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
                                 .info("Impossible to forward action: " + e);
                         return false;
                     }
-                });
-        this.platformManagementInterface = new BasePlatformManagementInterface(
-                this.getConfiguration().getDigitalTwinUri());
+                },
+                this.platformManagementInterface
+        );
     }
 
     @Override
@@ -222,11 +225,8 @@ public final class WoDTDigitalAdapter extends DigitalAdapter<WoDTDigitalAdapterC
     @Override
     public void onAdapterStart() {
         this.woDTWebServer.start();
-        this.getConfiguration().getPlatformToRegister().forEach(platform -> {
-            if (this.platformManagementInterface.registerToPlatform(platform, this.dtdManager.getDTD().toJson())) {
-                this.dtdManager.addPlatform(platform);
-            }
-        });
+        this.getConfiguration().getPlatformToRegister().forEach(platform ->
+                this.platformManagementInterface.registerToPlatform(platform, this.dtdManager.getDTD().toJson()));
     }
 
     @Override
