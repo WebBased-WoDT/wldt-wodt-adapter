@@ -17,6 +17,7 @@
 package io.github.webbasedwodt.adapter;
 
 import io.github.sanecity.wot.thing.Thing;
+import io.github.webbasedwodt.adapter.testdouble.PlatformManagementInterfaceReaderTestDouble;
 import io.github.webbasedwodt.application.component.DTDManager;
 import io.github.webbasedwodt.integration.wldt.LampDTOntology;
 import io.github.webbasedwodt.model.ontology.DTOntology;
@@ -47,7 +48,8 @@ class WoTDTDManagerTest {
                 "http://example/dt",
                 this.lampOntology,
                 "lampPA",
-                TEST_PORT_NUMBER);
+                TEST_PORT_NUMBER,
+                new PlatformManagementInterfaceReaderTestDouble());
     }
 
     @Test
@@ -123,10 +125,9 @@ class WoTDTDManagerTest {
     }
 
     @Test
-    @DisplayName("It should be possible to add a Platform to which it is registered")
+    @DisplayName("The DTDManager should be able to obtain the Platforms to which it is registered and link "
+            + "them to the descriptor")
     void addPlatform() {
-        final String platformUrl = "http://platform.it";
-        this.dtdManager.addPlatform(platformUrl);
         final Thing<?, ?, ?> thingDescription = this.dtdManager.getDTD();
         assertTrue(thingDescription.getMetadata().containsKey("links"));
         assertEquals(1, ((List<?>) thingDescription.getMetadata("links")).size());

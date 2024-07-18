@@ -58,11 +58,4 @@ public interface DTDManager extends DTDManagerReader {
      * @return true is correctly removed, false if not present
      */
     boolean removeAction(String rawActionName);
-
-    /**
-     * Add a WoDT Digital Twins Platform to which the WoDT Digital Twin is registered, to the DTD.
-     * @param platformUrl the url of the WoDT Digital Twins Platform
-     * @return true is correctly added, false instead
-     */
-    boolean addPlatform(String platformUrl);
 }

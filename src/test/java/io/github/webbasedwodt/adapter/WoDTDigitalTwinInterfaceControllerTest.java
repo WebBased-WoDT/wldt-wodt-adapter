@@ -16,6 +16,7 @@
 
 package io.github.webbasedwodt.adapter;
 
+import io.github.webbasedwodt.adapter.testdouble.PlatformManagementInterfaceReaderTestDouble;
 import io.github.webbasedwodt.application.component.DTDManager;
 import io.github.webbasedwodt.application.component.DTKGEngine;
 import io.github.webbasedwodt.integration.wldt.LampDTOntology;
@@ -51,7 +52,8 @@ class WoDTDigitalTwinInterfaceControllerTest {
                 TEST_DIGITAL_TWIN_URI,
                 new LampDTOntology(),
                 "lampPA",
-                TEST_PORT_NUMBER);
+                TEST_PORT_NUMBER,
+                new PlatformManagementInterfaceReaderTestDouble());
         new WoDTDigitalTwinInterfaceControllerImpl(this.dtkgEngine, this.dtdManager, (action, body) -> true)
                 .registerRoutes(this.app);
     }

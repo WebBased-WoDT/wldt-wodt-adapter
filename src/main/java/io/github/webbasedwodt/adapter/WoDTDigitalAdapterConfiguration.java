@@ -18,6 +18,7 @@ package io.github.webbasedwodt.adapter;
 
 import io.github.webbasedwodt.model.ontology.DTOntology;
 
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public final class WoDTDigitalAdapterConfiguration {
     private final String digitalTwinUri;
     private final int portNumber;
     private final String physicalAssetId;
-    private final Set<String> platformToRegister;
+    private final Set<URI> platformToRegister;
 
     /**
      * Default constructor.
@@ -44,7 +45,7 @@ public final class WoDTDigitalAdapterConfiguration {
             final DTOntology ontology,
             final int portNumber,
             final String physicalAssetId,
-            final Set<String> platformToRegister) {
+            final Set<URI> platformToRegister) {
         this.digitalTwinUri = digitalTwinUri;
         this.ontology = ontology;
         this.portNumber = portNumber;
@@ -88,7 +89,7 @@ public final class WoDTDigitalAdapterConfiguration {
      * Obtain the platform to which register.
      * @return the platforms urls.
      */
-    public Set<String> getPlatformToRegister() {
+    public Set<URI> getPlatformToRegister() {
         return new HashSet<>(this.platformToRegister);
     }
 }
