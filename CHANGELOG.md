@@ -1,3 +1,49 @@
+## [4.1.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/4.0.0...4.1.0) (2024-09-18)
+
+### Features
+
+* send current dtkg when consumers start to observe ([49b00db](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/49b00db1e2ae7cfce3ab99a793dfc62b72338c79))
+
+### Dependency updates
+
+* **deps:** update dependency gradle to v8.10 ([07573b9](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/07573b9ecfafbae515ba97b6882b2fd6b92a9eac))
+* **deps:** update dependency gradle to v8.10.1 ([80d1d9e](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/80d1d9e561983f0f1c081c7314047e9c372a28d6))
+* **deps:** update dependency io.javalin:javalin-bundle to v6.2.0 ([4e22632](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/4e226320064ca8e1c5c636efc96c1ae40aef8cfb))
+* **deps:** update dependency io.javalin:javalin-bundle to v6.3.0 ([61527b1](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/61527b1ae465245fb1498aa856a53931f24c53f6))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.100 ([026211f](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/026211f1c7d4812af465f6366bbad7921eea47eb))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.101 ([2e8c188](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/2e8c188f1ef793786a06576bcb6139485992e230))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.102 ([799d6d9](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/799d6d9bd1474b46bca196d250ba4f79fa60a770))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.103 ([86acda8](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/86acda8f1757194a90fc014ed7caa0c2b5964be6))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.104 ([46c8c08](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/46c8c0869fa3f72321a00966e1c8cc43bce62ad3))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.105 ([af3ecb6](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/af3ecb69eef19512724ffec737b066983a14fe10))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.106 ([c77333a](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/c77333a11414116935d3180af9620ec1024ab6ec))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.92 ([a5c974c](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/a5c974c2129d6aa2c79203ffef756988b02c2a7c))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.93 ([f28ff98](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/f28ff9816028b1e36041e39b53fc31add3b4b7ca))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.94 ([919376c](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/919376caffb54e86cbc1242a23a2ed20379c9bf3))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.95 ([8de1aa7](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/8de1aa76fd93bb7c86edc26ce280fca19b65d0fa))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.96 ([0c97384](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/0c97384510338760fb14e4178536f81caa7481e9))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.97 ([6e03e74](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/6e03e7460bf147aaea2deff66cb6c7373d0a8cab))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.98 ([506e9f3](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/506e9f367722ec932ff19c784e8976fc2cbc725b))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.99 ([225c952](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/225c952ebf6be5508481a5831fcaa93e9333a6e3))
+* **deps:** update junit5 monorepo to v5.11.0 ([1315471](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/13154713bdee184046c3ca5dfcaa8502f9c34ca9))
+* **deps:** update node.js to 20.16 ([326ac6a](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/326ac6a3fe73e3f03fd7b0182b377abf4778d152))
+* **deps:** update node.js to 20.17 ([37ffd8b](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/37ffd8b6c6ec892d7f959dd36542a81214741316))
+* **deps:** update plugin com.gradle.develocity to v3.17.6 ([0a2cc54](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/0a2cc54795d3fa0ebd252105ccab1dc49ea4192c))
+* **deps:** update plugin com.gradle.develocity to v3.18 ([d1a746b](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/d1a746b4fed5c6bba14fca805a737bf2c6cccec2))
+* **deps:** update plugin com.gradle.develocity to v3.18.1 ([f7e0ce5](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/f7e0ce5b4b2d395c0d1ce41e51f56d2c9afe1d70))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.10 ([f45e644](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/f45e6443be5061a888648ee56565312793925e3a))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.12 ([5fe4d2f](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/5fe4d2f24eb892976638dc87341b75f28c03f13f))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.8 ([bec4bfb](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/bec4bfb3397d163d8dc3c5eefecf7c23c5bbdef7))
+* **deps:** update plugin org.danilopianini.gradle-pre-commit-git-hooks to v2.0.9 ([f115bf2](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/f115bf208098997f4331211b7e12c3b07cf9aca8))
+* **deps:** update plugin publish-on-central to v5.1.4 ([634ce3d](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/634ce3d751ce03bcc9999dc105044c9c250ff8d9))
+* **deps:** update plugin publish-on-central to v5.1.5 ([751fc51](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/751fc517839b365c74a4af608231efe2d8be065d))
+* **deps:** update plugin publish-on-central to v5.1.6 ([6fa5d49](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/6fa5d491ef89696ec82206e826ce58635e9dc28b))
+* **deps:** update plugin publish-on-central to v5.1.7 ([96088ea](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/96088ea2271afd200260b3c9fa76654bf987e9a5))
+
+### General maintenance
+
+* update readme ([9117f34](https://github.com/WebBased-WoDT/wldt-wodt-adapter/commit/9117f34e7d13efbb5b920a44fd605fb02e875036))
+
 ## [4.0.0](https://github.com/WebBased-WoDT/wldt-wodt-adapter/compare/3.0.1...4.0.0) (2024-07-18)
 
 ### ⚠ BREAKING CHANGES
